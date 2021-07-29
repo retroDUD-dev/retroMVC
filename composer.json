@@ -1,0 +1,21 @@
+{
+    "name": "retrodud/character-creator",
+    "description": "Second itiration of my practice project. Here I will try to impliment a MVC Framework.",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Janez Šosterič",
+            "email": "info@retrodud.eu"
+        }
+    ],
+
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+
+    "require": {
+        "vlucas/phpdotenv": "^5.3"
+    }
+}

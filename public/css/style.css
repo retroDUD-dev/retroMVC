@@ -1,0 +1,390 @@
+/* basics */
+
+:root {
+    --text-color: #00c0c0;
+    --error-color: #b00000;
+    --message-color: #00b000;
+    --background-color: #1f1f1f;
+    --innerBackground-color: #252525;
+    --terminalInput-color: #4f4f4f;
+    --border-color: #a6a6a6;
+    --topButton-color: #585858;
+}
+
+body {
+    background-color: var(--background-color);
+    justify-content: center;
+}
+
+
+/* containers */
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    align-self: center;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-bottom: 0px;
+}
+
+.containerCol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    align-self: center;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-bottom: 0px;
+}
+
+.containerBottom {
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    align-self: center;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-top: 0px;
+}
+
+.innerContainer {
+    background-color: var(--innerBackground-color);
+    border: 1px solid var(--border-color);
+    margin: 3px;
+}
+
+.innerContainer>.inner {
+    text-align: center;
+}
+
+.submitContainer {
+    width: 100%;
+    position: relative;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-top: 0px;
+    padding-bottom: 20px;
+    padding-top: 10px;
+}
+
+.outputContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-bottom: 0px;
+    border-top: 0px;
+}
+
+.buttonContainerCol {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-bottom: 0px;
+    border-top: 0px;
+}
+
+@media screen and (max-width: 1080px) {
+    .container {
+        flex-wrap: wrap;
+    }
+    .col {
+        flex-basis: 100%;
+    }
+}
+
+.aboutContainer {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-bottom: 0px;
+}
+
+.topBar {
+    height: 40px;
+    width: 100%;
+    background-color: var(--terminalInput-color);
+    padding: 0px;
+    margin: 0px;
+    border: 0;
+    top: 0;
+    left: 0;
+    position: fixed;
+}
+
+.spacer {
+    height: 30px;
+    padding: 0px;
+    margin: 0px;
+    border: 0;
+}
+
+
+/* element positions and dementions */
+
+.row {
+    align-items: center;
+    margin: 8px;
+    border: 0px;
+    min-width: 300px;
+}
+
+.input {
+    color: var(--text-color);
+    background-color: var(--terminalInput-color);
+    height: 20px;
+    margin: 8px;
+    margin-top: 0px;
+    margin-left: 0px;
+    width: 150px;
+}
+
+.dice {
+    width: 50px;
+}
+
+textarea.input {
+    min-height: 40px;
+    vertical-align: top;
+}
+
+#skip {
+    display: contents;
+}
+
+.skip {
+    position: absolute;
+    right: 10px;
+    top: 90px;
+}
+
+#fileUpload {
+    display: none;
+}
+
+.DUD {
+    vertical-align: middle;
+}
+
+
+/* text specific */
+
+body {
+    color: white;
+}
+
+.header {
+    text-align: center;
+    font-size: 26px !important;
+    font-weight: bold;
+    border: 1px solid var(--border-color);
+    width: auto !important;
+    margin-right: 33%;
+    margin-left: 33%;
+}
+
+.text {
+    color: var(--text-color);
+    font-size: 18px;
+    margin: 8px;
+    margin-bottom: 0px;
+}
+
+.about {
+    color: var(--text-color);
+    font-size: 18px;
+    margin: 8px;
+    margin-bottom: 0px;
+    text-align: left;
+}
+
+.contact {
+    color: var(--text-color);
+    font-size: 20px;
+    margin: 8px;
+    margin-top: 30px;
+    margin-left: 20px;
+    margin-bottom: 0px;
+    text-align: center;
+    padding-left: 50px;
+    min-width: 800px;
+}
+
+.name {
+    padding-right: 5px;
+    padding-left: 5px;
+    text-align: right;
+}
+
+.submit {
+    color: var(--text-color);
+    background-color: var(--terminalInput-color);
+    font-size: 12px;
+    margin: 15px;
+    padding: 10px;
+    min-width: 100px;
+    text-transform: uppercase;
+}
+
+.submitAll {
+    color: var(--text-color);
+    background-color: var(--terminalInput-color);
+    font-size: 20px;
+    padding: 15px;
+    min-width: 900px;
+    width: 80%;
+    bottom: 1px;
+    left: 10%;
+}
+
+.inner {
+    font-size: 12px !important;
+    text-align: center;
+}
+
+.check {
+    margin: 0;
+    font-size: 12px !important;
+    text-align: center;
+}
+
+.output {
+    float: left;
+    background-color: var(--background-color);
+    border: 0px;
+    text-align: left;
+    width: 130px;
+}
+
+.oldOutput {
+    float: right;
+    background-color: var(--background-color);
+    text-align: center;
+    border: 0px;
+    line-height: 15px;
+    text-align: right;
+    width: 130px;
+}
+
+a>.button {
+    text-decoration: underline;
+}
+
+.mailtoLink {
+    color: var(--text-color);
+    text-decoration: underline;
+}
+
+.button {
+    text-align: center;
+    min-width: 240px;
+    cursor: pointer;
+    border: 2px solid var(--border-color);
+}
+
+.topButton1 {
+    position: fixed;
+    background-color: var(--topButton-color);
+    right: 10px;
+    top: 0px;
+    padding: 0px;
+    margin: 0px;
+    border: 0;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 140px;
+    cursor: pointer;
+}
+
+.topButton2 {
+    position: fixed;
+    background-color: var(--topButton-color);
+    right: 160px;
+    top: 0px;
+    padding: 0px;
+    margin: 0px;
+    border: 0;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 140px;
+    cursor: pointer;
+}
+
+.logo {
+    position: fixed;
+    background-color: var(--topButton-color);
+    left: 10px;
+    top: 0px;
+    padding: 0px;
+    margin: 0px;
+    border: 0;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 140px;
+    cursor: pointer;
+}
+
+.AboutMe {
+    position: fixed;
+    background-color: var(--topButton-color);
+    left: 160px;
+    top: 0px;
+    padding: 0px;
+    margin: 0px;
+    border: 0;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 140px;
+    cursor: pointer;
+}
+
+.error {
+    color: var(--error-color);
+    font-size: 12px;
+    font-weight: bold;
+    margin: 8px;
+    margin-left: 0px;
+}
+
+.message{
+    color: var(--message-color);
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+
+}
+
+/* misc */
+
+.invalid {
+    border: 3px solid var(--error-color);
+}
+
+.filler {
+    height: 10px;
+    width: 100px;
+}
