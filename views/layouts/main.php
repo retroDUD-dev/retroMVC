@@ -32,6 +32,9 @@ use app\core\Application;
             <button class="topButton2 text" onclick="window.location.href='/Login'">Log In</button>
             <button class="topButton1 text" onclick="window.location.href='/Register'">Sign Up</button>
         <?php else : ?>
+            <?php if (Application::isAdmin()) : ?>
+                <button class="topButton3 text" onclick="window.location.href='/Admin'">ADMIN</button>
+            <?php endif; ?>
             <button class="topButton2 text" onclick="window.location.href='/MyAccount'">My Account</button>
             <button class="topButton1 text" onclick="window.location.href='/MyAccount/Logout'">(Log Out)</button>
         <?php endif; ?>

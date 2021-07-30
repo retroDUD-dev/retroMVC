@@ -15,6 +15,8 @@ use app\models\ResetPasswordForm;
 use app\models\CharacterSearch;
 use app\models\CharacterUpload;
 use app\models\PDF;
+use app\models\UserProfile;
+use app\models\UserSearch;
 
 class AuthController extends Controller
 {
@@ -25,11 +27,12 @@ class AuthController extends Controller
             'upload',
             'characterSearch',
             'resetPassword',
-            'logout'
+            'logout',
+            'ADMIN' => ['admin']
         ]));
     }
 
-    public function register(Request $request): string
+    public function register(Request $request, array $params = array()): string
     {
         $user = new User();
         if ($request->isPost()) {
@@ -48,7 +51,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request): string
+    public function login(Request $request, array $params = array()): string
     {
         $login = new LoginForm();
         $user = new User();
@@ -70,7 +73,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function userAccount(Request $request)
+    public function userAccount(Request $request, array $params = array())
     {
         $action = new AccountActions;
         if (Application::$APP->session->get('upload') && !Application::isGuest()) {
@@ -99,10 +102,8 @@ class AuthController extends Controller
             } elseif (isset($action->characterSearch)) {
                 Application::$APP->response->redirect('/MyAccount/CharacterSearch');
                 exit;
-            } elseif (isset($action->upload)) {
-                $this->upload($request);
-            } elseif (isset($action->resetPassword)) {
-                Application::$APP->response->redirect('/MyAccount/ResetPassword');
+            } elseif (isset($action->edit)) {
+                Application::$APP->response->redirect('/MyAccount/MyProfile');
                 exit;
             } elseif (isset($action->logout)) {
                 Application::$APP->response->redirect('/MyAccount/Logout');
@@ -114,7 +115,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function characterSearch(Request $request)
+    public function characterSearch(Request $request, array $params = array())
     {
         $character = new CharacterSearch();
         $by = array();
@@ -123,8 +124,7 @@ class AuthController extends Controller
                 $charID = filter_var(substr($request->getValue('downloadPdf'), 11), FILTER_VALIDATE_INT);
                 $character = $character->findOne(["id" => $charID]);
                 Application::$APP->response->download(Application::$ROOT_DIR . '/runtime/' . substr($character->file, 0, -4) . ".pdf");
-            }
-            if ($request->checkValue('delete')) {
+            } elseif ($request->checkValue('delete')) {
                 $charID = substr($request->getValue('delete'), 6);
                 $character->delete(['id' => $charID]);
             }
@@ -157,7 +157,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function upload(Request $request)
+    public function upload(Request $request, array $params = array())
     {
         $character = new Character();
         $action = Application::$APP->session->get('action');
@@ -175,7 +175,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function resetPassword(Request $request)
+    public function resetPassword(Request $request, array $params = array())
     {
         $resetPassword = new ResetPasswordForm();
         $user = new User();
@@ -189,7 +189,7 @@ class AuthController extends Controller
             } elseif ($isValid) {
                 $resetPassword->update(['password' => password_hash($this->newPassword, PASSWORD_DEFAULT)], $userIdentifier);
                 Application::$APP->session->setFlash('success', 'Password updated');
-                Application::$APP->response->redirect('/MyAccount');
+                Application::$APP->response->redirect('/MyAccount/MyProfile');
                 exit;
             }
         }
@@ -204,5 +204,178 @@ class AuthController extends Controller
         Application::$APP->session->setFlash('success', 'You were successfully logged out');
         Application::$APP->response->redirect('/');
         exit;
+    }
+
+    public function userProfile(Request $request, array $params = array())
+    {
+        $edit = new UserProfile();
+
+        if (isset($params['disabled'])) {
+            $disabled = $params['disabled'];
+        } else {
+            $disabled = 'disabled';
+        }
+        
+            $userIdentifier = [Application::$APP->session->get('user')['primaryKey'] => Application::$APP->session->get('user')['primaryValue']];
+        $user = $edit->findOne($userIdentifier);
+
+        if ($request->isPost()) {
+            $edit->loadData($request->getBody());
+            if (isset($edit->resetPassword)) {
+                    Application::$APP->response->redirect('/MyAccount/MyProfile/ResetPassword');
+            }
+            if (!isset($edit->edit)) {
+                if ($edit->validate()) {
+                    if (isset($edit->save)) {
+                        $updated = false;
+                        if (isset($edit->firstname)) {
+                            $user->update(['firstname' => $edit->firstname], $userIdentifier);
+                            $updated = true;
+                        }
+                        if (isset($edit->lastname)) {
+                            $user->update(['lastname' => $edit->lastname], $userIdentifier);
+                            $updated = true;
+                        }
+                        if (isset($edit->email)) {
+                            $user->update(['email' => $edit->email], $userIdentifier);
+                            $updated = true;
+                        }
+                        if ($updated) {
+                            Application::$APP->login($user);
+                            Application::$APP->session->setFlash('success', 'Profile updated');
+                            Application::$APP->response->redirect('/MyAccount/MyProfile');
+                        }
+                        $disabled = 'disabled';
+                    } elseif (isset($edit->deactivate)) {
+                        $user->update(['status' => 2], $userIdentifier);
+                        Application::$APP->logout();
+                        Application::$APP->session->setFlash('success', 'Account has been deactivated. Contact me if you wish to restore it.');
+                        Application::$APP->response->redirect('/');
+                        exit;
+                    } elseif (isset($edit->delete)) {
+                        $user->delete(['id' => $userIdentifier]);
+                        Application::$APP->logout();
+                        Application::$APP->session->setFlash('success', 'Account has been deleted.');
+                        Application::$APP->response->redirect('/');
+                        exit;
+                    }
+                }
+            } else {
+                $disabled = '';
+            }
+        }
+        return $this->render('userProfile', [
+            'model' => $user,
+            'disabled' => $disabled
+        ]);
+    }
+
+    public function admin(Request $request, array $params = array())
+    {
+        $search = new UserSearch();
+        $by = array();
+        if ($request->isPost()) {
+            if ($request->checkValue('EDIT')) {
+                $userID = filter_var(substr($request->getValue('edit'), 4), FILTER_VALIDATE_INT);
+                $user = new User();
+                $user = $user->findOne(["id" => $userID]);
+                Application::$APP->session->set('profileUser', $user);
+                Application::$APP->response->redirect('Admin/UserProfile');
+                exit;
+            } elseif ($request->checkValue('DELETE')) {
+                $userID = substr($request->getValue('delete'), 6);
+                $search->delete(['id' => $userID]);
+            }
+            $search->loadData($request->getBody());
+            if (isset($search->searchById) && $search->searchById) {
+                $by['id'] = "$search->searchByName";
+            }
+            if (isset($search->searchByFirstname) && $search->searchByFirstname) {
+                $by['firstname'] = "$search->searchByFirstname";
+            }
+            if (isset($search->searchByLastname) && $search->searchByLastname) {
+                $by['lastname'] = "$search->searchByLastname";
+            }
+            if (isset($search->searchByEmail) && $search->searchByEmail) {
+                $by['email'] = "$search->searchByEmail";
+            }
+            if (isset($search->searchByStatus) && $search->searchByStatus) {
+                $by['status'] = "$search->searchByStatus";
+            }
+        }
+        if ($search->search($by)) {
+            Application::$APP->session->set('userSearch', $search);
+            Application::$APP->session->set('searchResults', true);
+        }
+
+        return $this->render('userSearch', [
+            'model' => $search
+        ]);
+    }
+
+    public function adminUserProfile(Request $request, array $params = array())
+    {
+        $edit = new UserProfile();
+
+        if (isset($params['disabled'])) {
+            $disabled = $params['disabled'];
+        } else {
+            $disabled = 'disabled';
+        }
+
+        $userIdentifier = ['id' => Application::$APP->session->get('profileUser')->id];
+        $user = $edit->findOne($userIdentifier);
+
+        if ($request->isPost()) {
+            $edit->loadData($request->getBody());
+            if (isset($edit->resetPassword)) {
+                //tod: set up password recovery
+                Application::$APP->response->redirect('/Admin/UserProfile');
+                exit;
+            }
+            if (!isset($edit->edit)) {
+                if ($edit->validate()) {
+                    if (isset($edit->save)) {
+                        $updated = false;
+                        if (isset($edit->firstname)) {
+                            $user->update(['firstname' => $edit->firstname], $userIdentifier);
+                            $updated = true;
+                        }
+                        if (isset($edit->lastname)) {
+                            $user->update(['lastname' => $edit->lastname], $userIdentifier);
+                            $updated = true;
+                        }
+                        if (isset($edit->email)) {
+                            $user->update(['email' => $edit->email], $userIdentifier);
+                            $updated = true;
+                        }
+                        if ($updated) {
+                            $disabled = 'disabled';
+                            Application::$APP->session->setFlash('success', 'Profile updated');
+                            Application::$APP->response->redirect('/Admin');
+                            exit;
+                        }
+                    } elseif (isset($edit->deactivate)) {
+                        $user->update(['status' => 2], $userIdentifier);
+                        Application::$APP->logout();
+                        Application::$APP->session->setFlash('success', 'Account has been deactivated. Contact me if you wish to restore it.');
+                        Application::$APP->response->redirect('/');
+                        exit;
+                    } elseif (isset($edit->delete)) {
+                        $user->delete(['id' => $userIdentifier]);
+                        Application::$APP->logout();
+                        Application::$APP->session->setFlash('success', 'Account has been deleted.');
+                        Application::$APP->response->redirect('/');
+                        exit;
+                    }
+                }
+            } else {
+                $disabled = '';
+            }
+        }
+        return $this->render('adminUserProfile', [
+            'model' => $user,
+            'disabled' => $disabled
+        ]);
     }
 }

@@ -24,7 +24,11 @@ use app\core\form\Form;
         <?php Form::inputField($model, 'confirmNewPassword', 'password') ?>
         <br>
         <?php Form::button($model, 'submit', 'Submit') ?>
-        <a class="text" href="/MyAccount">Cancel</a>
+        <?php if (Application::isAdmin() && str_contains(Application::$APP->request?->getPath(), "/Admin") && $model->getDisplayName() !== Application::$APP->session->get('user')['displayName']) : ?>
+        <a class="text" href="/Admin/UserProfile">Cancel</a>
+        <?php else : ?>
+        <a class="text" href="/MyAccount/MyProfile">Cancel</a>
+        <?php endif; ?>
     </div>
     <?php Form::end() ?>
 </div>

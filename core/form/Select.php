@@ -24,16 +24,21 @@ class Select extends BaseField
         //       <option value="fiat">Fiat</option>
         //       <option value="audi">Audi</option>
         //     </select>
+        //         '<textarea name="%s" class="input %s" form="%s" %s>%s</textarea>'
 
-        $select;
+
+        $select = "<select name='%s' class='input %s' form='%s' %s>\n";
+        foreach ($this->items as $itemName => $item) {
+            $select .= "<option value='$itemName'>$item</option>\n";
+        }
+        $select .= "</select>\n";
 
         return sprintf(
-            '<textarea name="%s" class="input %s" form="%s" %s>%s</textarea>',
+            $select,
             $this->attribute,
             $this->model->hasErrors($this->attribute) ? 'invalid' : '',
             $this->form,
-            $this->custom,
-            $this->model->{$this->attribute} ?? ''
+            $this->custom
         );
     }
 }

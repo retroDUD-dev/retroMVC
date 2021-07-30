@@ -331,6 +331,21 @@ a>.button {
     cursor: pointer;
 }
 
+.topButton3 {
+    position: fixed;
+    background-color: var(--topButton-color);
+    right: 310px;
+    top: 0px;
+    padding: 0px;
+    margin: 0px;
+    border: 0;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 140px;
+    cursor: pointer;
+}
+
 .logo {
     position: fixed;
     background-color: var(--topButton-color);
@@ -382,6 +397,11 @@ a>.button {
 
 .invalid {
     border: 3px solid var(--error-color);
+}
+
+:disabled{
+    border: 1px solid var(--innerBackground-color);
+    background-color: var(--background-color);
 }
 
 .filler {

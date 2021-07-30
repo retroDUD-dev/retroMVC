@@ -6,6 +6,7 @@ use app\core\Application;
 use app\core\db\DbModel;
 use app\core\Functions;
 
+#[Character]
 class Character extends DbModel
 {
     public function __construct(

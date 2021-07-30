@@ -34,7 +34,6 @@ $app->router->post('/CreateNewCharacter/AddFeatures', [SiteController::class, 'a
 $app->router->get('/CreateNewCharacter/Summary', [SiteController::class, 'summary']);
 $app->router->post('/CreateNewCharacter/Summary', [SiteController::class, 'summary']);
 
-
 $app->router->get('/Register', [AuthController::class, 'register']);
 $app->router->post('/Register', [AuthController::class, 'register']);
 $app->router->get('/Login', [AuthController::class, 'login']);
@@ -45,9 +44,16 @@ $app->router->get('/MyAccount/Upload', [AuthController::class, 'upload']);
 $app->router->post('/MyAccount/Upload', [AuthController::class, 'upload']);
 $app->router->get('/MyAccount/CharacterSearch', [AuthController::class, 'characterSearch']);
 $app->router->post('/MyAccount/CharacterSearch', [AuthController::class, 'characterSearch']);
-$app->router->get('/MyAccount/ResetPassword', [AuthController::class, 'resetPassword']);
-$app->router->post('/MyAccount/ResetPassword', [AuthController::class, 'resetPassword']);
+$app->router->get('/MyAccount/MyProfile', [AuthController::class, 'userProfile']);
+$app->router->post('/MyAccount/MyProfile', [AuthController::class, 'userProfile']);
 $app->router->get('/MyAccount/Logout', [AuthController::class, 'logout']);
 $app->router->post('/MyAccount/Logout', [AuthController::class, 'logout']);
+$app->router->get('/MyAccount/MyProfile/ResetPassword', [AuthController::class, 'resetPassword']);
+$app->router->post('/MyAccount/MyProfile/ResetPassword', [AuthController::class, 'resetPassword']);
+
+$app->router->get('/Admin', [AuthController::class, 'admin']);
+$app->router->post('/Admin', [AuthController::class, 'admin']);
+$app->router->get('/Admin/UserProfile', [AuthController::class, 'adminUserProfile']);
+$app->router->post('/Admin/UserProfile', [AuthController::class, 'adminUserProfile']);
 
 $app->run();
