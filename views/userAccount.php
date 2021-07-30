@@ -41,7 +41,7 @@ $this->title = 'My Account';
             </div>
             <div class="row">
                 <?php Form::begin('accountActions', '', 'post') ?>
-                <?php Form::button($model, 'resetPassword', 'Reset password') ?>
+                <?php Form::button($model, 'edit', 'Edit profile') ?>
                 <br>
                 <?php Form::button($model, 'logout', 'Sign out') ?>
                 <?php Form::end() ?>

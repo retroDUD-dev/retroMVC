@@ -16,7 +16,7 @@ class AccountActions extends Model
     public string $characterUpload;
     public string $isPublic;
     public string $upload;
-    public string $resetPassword;
+    public string $edit;
     public string $logout;
 
     public function attributes(): array
@@ -27,7 +27,7 @@ class AccountActions extends Model
             'characterUpload',
             'isPublic',
             'upload',
-            'resetPassword',
+            'edit',
             'logout'
         ];
     }
@@ -45,7 +45,7 @@ class AccountActions extends Model
             'characterUpload' => '',
             'isPublic' => '',
             'upload' => '',
-            'resetPassword' => '',
+            'edit' => '',
             'logout' => ''
         ];
     }

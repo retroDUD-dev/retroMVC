@@ -59,9 +59,7 @@ class SiteController extends Controller
         Application::$APP->model = new Character();
         if ($request->isPost()) {
             Application::$APP->model->loadData($request->getBody());
-            $dice = new Dice(Application::$APP->model->numberOfDice, Application::$APP->model->sidesOfDice);
             Application::$APP->model->setHitDice(new Dice(Application::$APP->model->numberOfDice, Application::$APP->model->sidesOfDice));
-            Application::$APP->model->id = random_int(0, 9001);
             if (Application::$APP->model->validate()) {
                 Application::$APP->session->set('newCharacter', Application::$APP->model);
                 Application::$APP->session->setFlash('success', Application::$APP->model->getName() . " created! Now add some actions!");

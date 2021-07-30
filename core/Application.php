@@ -9,7 +9,7 @@ class Application
     public static string $ROOT_DIR;
     public static Application $APP;
     public static string $LAYOUT_MAIN = 'main';
-    
+
     public ?string $userClass = null;
     public Router $router;
     public Request $request;
@@ -41,9 +41,19 @@ class Application
         }
     }
 
-    public static function isGuest(): mixed
+    public static function isGuest(): bool
     {
         return !self::$APP->session->get('user');
+    }
+
+    public static function isAdmin(): bool
+    {
+        if (self::$APP->isGuest()) {
+            return false;
+        } elseif (self::$APP->session->get('user')['isAdmin']) {
+            return true;
+        }
+        return false;
     }
 
     public function login(UserModel $user): void
@@ -55,8 +65,9 @@ class Application
             'primaryKey' => $primaryKey,
             'primaryValue' => $primaryValue,
             'displayName' => $user->getDisplayName(),
-            'email' => $user->email
-    ]);
+            'email' => $user->email,
+            'isAdmin' => $user->isAdmin()
+        ]);
     }
 
     public function logout(): void

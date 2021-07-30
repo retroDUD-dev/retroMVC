@@ -46,6 +46,9 @@ abstract class Model
 
     public function validate(): bool
     {
+        if (Application::isAdmin()) {
+            return true;
+        }
         foreach ($this->rules() as $attribute => $rules) {
             $pos = strpos($attribute, '/');
             if ($pos) {
@@ -81,7 +84,7 @@ abstract class Model
                     $className = $rule['class'];
                     $uniqueAttribute = $rule['attribute'] ?? $attribute;
                     $tableName = $className::tableName();
-                    $statement = Application::$APP->db->prepare("SELECT * FROM $tableName WHERE $uniqueAttribute = :attribute");
+                    $statement = Application::$APP->db->prepare("SELECT * FROM $tableName WHERE $uniqueAttribute = :attribute AND id != ".Application::$APP->session->get('user')['primaryValue']."");
                     $statement->bindValue(":attribute", $value);
                     $statement->execute();
                     $record = $statement->fetchObject();

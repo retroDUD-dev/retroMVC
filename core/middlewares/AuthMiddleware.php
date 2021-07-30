@@ -19,6 +19,10 @@ class AuthMiddleware extends BaseMiddleware
             if (empty($this->actions) || in_array(Application::$APP->controller->action, $this->actions)) {
                 Application::$APP->response->redirect('/Login');
             }
+        } elseif (!Application::isAdmin()) {
+            if (empty($this->actions['ADMIN']) || in_array(Application::$APP->controller->action, $this->actions['ADMIN'])) {
+                throw new ForbiddenException();
+            }
         }
     }
 }

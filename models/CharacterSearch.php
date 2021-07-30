@@ -53,7 +53,7 @@ class CharacterSearch extends DbModel
         }
         if (str_contains($attribute, 'delete')) {
             $attribute = 'delete';
-        }        
+        }
 
         return $this->labels()[$attribute] ?? $attribute;
     }
@@ -75,48 +75,42 @@ class CharacterSearch extends DbModel
     public function search(array $by): bool
     {
         $html = '';
-        $r = $this->findAll($by);
-        foreach ($r as $character) {
-            if ($character->user === Application::$APP->session->get('user')['primaryValue']) {
-                $html .= "<div class='text innerContainer' style='height: 50px; vertical-align: middle; padding-top:25px; padding-left: 10px; padding-right: 10px; margin: 0px;'>" . $character->name . ", " . " level " . $character->level . " " . $character->race . " " . $character->class . "; created by <b>you.</b><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'delete" . $character->id . "', 'delete') ?></div><br>";
-            } elseif ($character->isPublic) {
-                $html .= "<div class='text innerContainer' style='height: 50px; vertical-align: middle; padding-top:25px; padding-left: 10px; padding-right: 10px; margin: 0px;'>" . $character->name . ", " . " level " . $character->level . " " . $character->race . " " . $character->class . "; created publicly.<?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?></div><br>";
-            }
+        $bySelf = $by;
+        $bySelf['user'] = Application::$APP->session->get('user')['primaryValue'];
+        $r = $this->findAll($bySelf);
+
+        if (!isset($where['searchOnlyMine'])){
+            $byOthers = $by;
+            $r = array_merge($r, $this->findAll($byOthers));
         }
-        if (!$html) {
-            $html = '<div class="text">No results.</div>';
+
+        if (Application::isAdmin()) {
+            foreach ($r as $character) {
+                if ($character->user === Application::$APP->session->get('user')['primaryValue']) {
+                    $html .= "<div class='text innerContainer' style='height: 50px; vertical-align: middle; padding-top:25px; padding-left: 10px; padding-right: 10px; margin: 0px;'>" . $character->name . ", " . " level " . $character->level . " " . $character->race . " " . $character->class . "; created by <b>you.</b><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'delete" . $character->id . "', 'delete') ?></div><br>";
+                } elseif ($character->isPublic) {
+                    $html .= "<div class='text innerContainer' style='height: 50px; vertical-align: middle; padding-top:25px; padding-left: 10px; padding-right: 10px; margin: 0px;'>" . $character->name . ", " . " level " . $character->level . " " . $character->race . " " . $character->class . "; created publicly by user ID: <b>$character->user</b>.<?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'delete" . $character->id . "', 'delete') ?></div><br>";
+                }
+            }
+            if (!$html) {
+                $html = '<div class="text">No results.</div>';
+            }
+        } else {
+            foreach ($r as $character) {
+                if ($character->user === Application::$APP->session->get('user')['primaryValue']) {
+                    $html .= "<div class='text innerContainer' style='height: 50px; vertical-align: middle; padding-top:25px; padding-left: 10px; padding-right: 10px; margin: 0px;'>" . $character->name . ", " . " level " . $character->level . " " . $character->race . " " . $character->class . "; created by <b>you.</b><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'delete" . $character->id . "', 'delete') ?></div><br>";
+                } elseif ($character->isPublic) {
+                    $html .= "<div class='text innerContainer' style='height: 50px; vertical-align: middle; padding-top:25px; padding-left: 10px; padding-right: 10px; margin: 0px;'>" . $character->name . ", " . " level " . $character->level . " " . $character->race . " " . $character->class . "; created publicly.<?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?></div><br>";
+                }
+            }
+            if (!$html) {
+                $html = '<div class="text">No results.</div>';
+            }
         }
 
         $handle = fopen(Application::$ROOT_DIR . "/runtime/SearchBy" . Application::$APP->session->get('user')['primaryValue'] . ".php", "w");
         fwrite($handle, $html, strlen($html));
         fclose($handle);
         return file_exists(Application::$ROOT_DIR . "/runtime/SearchBy" . Application::$APP->session->get('user')['primaryValue'] . ".php");
-    }
-
-    public function findAll(array $where): array|false
-    {
-        $tableName = static::tableName();
-        $OnlyMine = false;
-        if (isset($where['searchOnlyMine'])) {
-            unset($where['searchOnlyMine']);
-            $OnlyMine = true;
-        }
-        if (empty($where)) {
-            $sql = '';
-        } else {
-            $attributes = array_keys($where);
-            $sql = implode(" AND ", array_map(fn ($attr) => "$attr = :$attr", $attributes));
-            $sql = " AND " . $sql;
-        }
-        if ($OnlyMine) {
-            $statement = self::prepare("SELECT * FROM $tableName WHERE user = " . Application::$APP->session->get('user')['primaryValue'] . " $sql");
-        } else {
-            $statement = self::prepare("SELECT * FROM $tableName WHERE (isPublic = 1 OR user = " . Application::$APP->session->get('user')['primaryValue'] . ") $sql");
-        }
-        foreach ($where as $key => $value) {
-            $statement->bindValue(":$key", $value);
-        }
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_CLASS, static::class);
     }
 }

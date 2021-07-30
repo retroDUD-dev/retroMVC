@@ -6,16 +6,15 @@ use app\core\UserModel;
 
 class User extends UserModel
 {
-    const STATUS_INACTIVE = 0;
-    const STATUS_ACTIVE = 1;
-    const STATUS_DELETED = 2;
+    public function __construct()
+    {
+    }
 
     public string $firstname = '';
     public string $lastname = '';
     public string $email = '';
     public string $password = '';
     public string $confirmPassword = '';
-    public int $status = self::STATUS_INACTIVE;
 
     public static function tableName(): string
     {
@@ -65,9 +64,15 @@ class User extends UserModel
             'email' => 'Email',
             'password' => 'Password',
             'confirmPassword' => 'Confirm password',
-            'login' => ''
+            'resetPassword' => '',
+            'login' => '',
+            'edit' => '',
+            'save' => '',
+            'deactivate' => '',
+            'delete' => ''
         ];
     }
+
     public function getDisplayName(): string
     {
         return $this->firstname;
