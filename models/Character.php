@@ -86,7 +86,7 @@ class Character extends DbModel
         $this->file = date('Ymd-gi');
     }
 
-    public int $id;
+    public int $id = 0;
     public string $user = 'retroDUD';
     public int $isPublic = 1;
     public string $file = '';

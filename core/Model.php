@@ -46,9 +46,6 @@ abstract class Model
 
     public function validate(): bool
     {
-        if (Application::isAdmin()) {
-            return true;
-        }
         foreach ($this->rules() as $attribute => $rules) {
             $pos = strpos($attribute, '/');
             if ($pos) {

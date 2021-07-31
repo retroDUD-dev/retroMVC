@@ -17,6 +17,7 @@ class UserSearch extends UserModel
     public string $searchByLastname = '';
     public string $searchByEmail = '';
     public string $searchByStatus = '';
+    public string $userSearch = '';
 
     public static function tableName(): string
     {
@@ -48,13 +49,26 @@ class UserSearch extends UserModel
             'searchByEmail' => 'Email: ',
             'searchByStatus' => 'Status: ',
             'edit' => '',
-            'delete' => ''
+            'delete' => '',
+            'userSearch' => ''
         ];
     }
 
     public function rules(): array
     {
         return [];
+    }
+
+    public function getLabel($attribute): string
+    {
+        if (str_contains($attribute, 'edit')) {
+            $attribute = 'edit';
+        }
+        if (str_contains($attribute, 'delete')) {
+            $attribute = 'delete';
+        }
+
+        return $this->labels()[$attribute] ?? $attribute;
     }
 
     public function getDisplayName(): string
@@ -68,11 +82,13 @@ class UserSearch extends UserModel
         $r = $this->findAll($by);
 
         foreach ($r as $user) {
-            $html .= "<div class='text innerContainer' style='height: 50px; vertical-align: middle; padding-top:25px; padding-left: 10px; padding-right: 10px; margin: 0px;'>" . $user->status . " " . $user->type . " user:  " . $user->firstname . " " . $user->lastname . " &#60;" . $user->email . "&#62; <?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('userSearch'), 'edit" . $user->id . "', 'EDIT') ?> <?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('userSearch'), 'delete" . $user->id . "', 'DELETE') ?></div>";
+            $html .= "<tr class='header text'><td class='tCell'>" . $user->statusToString() . "</td><td class='tCell'>" . $user->typeToString() . "</td><td class='tCell'>" . $user->firstname. " ". $user->lastname . "</td><td class='tCell'>" . " &#60;" . $user->email . "&#62;</td><td class='tCell'><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('userSearch'), 'edit" . $user->id . "', 'EDIT') ?> <?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('userSearch'), 'delete" . $user->id . "', 'DELETE') ?></td></tr>";
         }
         if (!$html) {
-            $html = '<div class="text">No results.</div>';
+            $html = '<div class="text error">No results.</div>';
         }
+
+        
 
         $handle = fopen(Application::$ROOT_DIR . "/runtime/AdminSearchBy" . Application::$APP->session->get('user')['primaryValue'] . ".php", "w");
         fwrite($handle, $html, strlen($html));

@@ -18,6 +18,8 @@ class CharacterSearch extends DbModel
     public string $searchByUser;
     public string $searchOnlyMine;
     public string $file = '';
+    public string $user = '';
+    public string $isPublic = '';
 
     public static function tableName(): string
     {
@@ -79,33 +81,29 @@ class CharacterSearch extends DbModel
         $bySelf['user'] = Application::$APP->session->get('user')['primaryValue'];
         $r = $this->findAll($bySelf);
 
-        if (!isset($where['searchOnlyMine'])){
+        if (!isset($where['searchOnlyMine'])) {
             $byOthers = $by;
             $r = array_merge($r, $this->findAll($byOthers));
         }
 
-        if (Application::isAdmin()) {
-            foreach ($r as $character) {
-                if ($character->user === Application::$APP->session->get('user')['primaryValue']) {
-                    $html .= "<div class='text innerContainer' style='height: 50px; vertical-align: middle; padding-top:25px; padding-left: 10px; padding-right: 10px; margin: 0px;'>" . $character->name . ", " . " level " . $character->level . " " . $character->race . " " . $character->class . "; created by <b>you.</b><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'delete" . $character->id . "', 'delete') ?></div><br>";
-                } elseif ($character->isPublic) {
-                    $html .= "<div class='text innerContainer' style='height: 50px; vertical-align: middle; padding-top:25px; padding-left: 10px; padding-right: 10px; margin: 0px;'>" . $character->name . ", " . " level " . $character->level . " " . $character->race . " " . $character->class . "; created publicly by user ID: <b>$character->user</b>.<?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'delete" . $character->id . "', 'delete') ?></div><br>";
+        foreach ($r as $character) {
+            if ($character->user === "" . $bySelf['user'] . "") {
+                $html .= "<tr class='header text'><td class='tCell'>" . $character->name . "</td><td class='tCell'>" . " level " . $character->level . "</td><td class='tCell'>" . $character->race . "</td><td class='tCell'>" . $character->class . "</td>";
+                $html .= "<td class='tCell'>created by <b>you.</b></td><td class='tCell'><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'delete" . $character->id . "', 'delete') ?></td></tr>";
+            } elseif ($character->isPublic) {
+                $html .= "<tr class='header text'><td class='tCell'>" . $character->name . "</td><td class='tCell'>" . " level " . $character->level . "</td><td class='tCell'>" . $character->race . "</td><td class='tCell'>" . $character->class . "</td>";
+                if (Application::isAdmin()) {
+                    $html .= "<td class='tCell'>created publicly by user ID: <b>$character->user</b></td><td class='tCell'><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'delete" . $character->id . "', 'delete') ?></td></tr></td></tr>";
+                } else {
+                    $html .= "<td class='tCell'>created publicly</td><td class='tCell'><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?></td></tr>";
                 }
+            } elseif (Application::isAdmin()) {
+                $html .= "<tr class='header text'><td class='tCell'>" . $character->name . "</td><td class='tCell'>" . " level " . $character->level . "</td><td class='tCell'>" . $character->race . "</td><td class='tCell'>" . $character->class . "</td>";
+                $html .= "<td class='tCell'>created privately by user ID: <b>$character->user</b></td><td class='tCell'><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'delete" . $character->id . "', 'delete') ?></td></tr>";
             }
-            if (!$html) {
-                $html = '<div class="text">No results.</div>';
-            }
-        } else {
-            foreach ($r as $character) {
-                if ($character->user === Application::$APP->session->get('user')['primaryValue']) {
-                    $html .= "<div class='text innerContainer' style='height: 50px; vertical-align: middle; padding-top:25px; padding-left: 10px; padding-right: 10px; margin: 0px;'>" . $character->name . ", " . " level " . $character->level . " " . $character->race . " " . $character->class . "; created by <b>you.</b><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'delete" . $character->id . "', 'delete') ?></div><br>";
-                } elseif ($character->isPublic) {
-                    $html .= "<div class='text innerContainer' style='height: 50px; vertical-align: middle; padding-top:25px; padding-left: 10px; padding-right: 10px; margin: 0px;'>" . $character->name . ", " . " level " . $character->level . " " . $character->race . " " . $character->class . "; created publicly.<?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('characterSearch'), 'downloadPdf" . $character->id . "', 'Download PDF') ?></div><br>";
-                }
-            }
-            if (!$html) {
-                $html = '<div class="text">No results.</div>';
-            }
+        }
+        if (!$html) {
+            $html = '<div class="text error">No results.</div>';
         }
 
         $handle = fopen(Application::$ROOT_DIR . "/runtime/SearchBy" . Application::$APP->session->get('user')['primaryValue'] . ".php", "w");

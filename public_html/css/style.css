@@ -148,6 +148,17 @@ body {
     min-width: 300px;
 }
 
+.tHead{
+    border: 2px solid var(--border-color);
+    text-transform: uppercase;
+}
+
+.tCell{
+    border: 1px solid var(--border-color);
+    width: 300px;
+    height: auto;
+}
+
 .input {
     color: var(--text-color);
     background-color: var(--terminalInput-color);

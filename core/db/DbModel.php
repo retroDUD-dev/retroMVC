@@ -79,7 +79,7 @@ abstract class DbModel extends Model
         return $statement->fetchObject(static::class);
     }
 
-    public function findAll(array $where): array|false
+    public function findAll(array $where = array()): array|false
     {
         $tableName = static::tableName();
         if (empty($where)) {

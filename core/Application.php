@@ -56,6 +56,17 @@ class Application
         return false;
     }
 
+    public function adminReset(): void
+    {
+        $this->session->set('user', [
+            'primaryKey' => self::$APP->session->get('admin')['primaryKey'],
+            'primaryValue' => self::$APP->session->get('admin')['primaryValue'],
+            'displayName' => self::$APP->session->get('admin')['displayName'],
+            'email' => self::$APP->session->get('admin')['email'],
+            'isAdmin' => true
+        ]);
+    }
+
     public function login(UserModel $user): void
     {
         $this->user = $user;
@@ -68,12 +79,21 @@ class Application
             'email' => $user->email,
             'isAdmin' => $user->isAdmin()
         ]);
+        if ($user->isAdmin()) {
+            $this->session->set('admin', [
+                'primaryKey' => $primaryKey,
+                'primaryValue' => $primaryValue,
+                'displayName' => $user->getDisplayName(),
+                'email' => $user->email
+            ]);
+        }
     }
 
     public function logout(): void
     {
         $this->user = null;
         $this->session->remove('user');
+        $this->session->remove('admin');
     }
 
     public function run(): void

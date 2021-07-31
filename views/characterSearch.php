@@ -20,5 +20,29 @@ use function Composer\Autoload\includeFile;
 <?php Form::end() ?>
 
 <?php if (Application::$APP->session->get('searchResults')) : ?>
-    <?php includeFile(Application::$ROOT_DIR . "/runtime/SearchBy" . Application::$APP->session->get('user')['primaryValue'] . ".php") ?>
+    <table>
+        <tbody>
+            <tr class="tHead header text">
+                <th class="tHead tCell">
+                    Name
+                </th>
+                <th class="tHead tCell">
+                    Level
+                </th>
+                <th class="tHead tCell">
+                    Race
+                </th>
+                <th class="tHead tCell">
+                    Class
+                </th>
+                <th class="tHead tCell">
+                    Ownership
+                </th>
+                <th class="tHead tCell">
+                    Options
+                </th>
+            </tr>
+            <?php includeFile(Application::$ROOT_DIR . "/runtime/SearchBy" . Application::$APP->session->get('user')['primaryValue'] . ".php") ?>
+        </tbody>
+    </table>
 <?php endif ?>

@@ -3,6 +3,7 @@
 use app\core\Application;
 use app\controllers\SiteController;
 use app\controllers\AuthController;
+use app\controllers\AdminController;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -51,9 +52,11 @@ $app->router->post('/MyAccount/Logout', [AuthController::class, 'logout']);
 $app->router->get('/MyAccount/MyProfile/ResetPassword', [AuthController::class, 'resetPassword']);
 $app->router->post('/MyAccount/MyProfile/ResetPassword', [AuthController::class, 'resetPassword']);
 
-$app->router->get('/Admin', [AuthController::class, 'admin']);
-$app->router->post('/Admin', [AuthController::class, 'admin']);
-$app->router->get('/Admin/UserProfile', [AuthController::class, 'adminUserProfile']);
-$app->router->post('/Admin/UserProfile', [AuthController::class, 'adminUserProfile']);
+$app->router->get('/Admin', [AdminController::class, 'admin']);
+$app->router->post('/Admin', [AdminController::class, 'admin']);
+$app->router->get('/Admin/UserSearch', [AdminController::class, 'userSearch']);
+$app->router->post('/Admin/UserSearch', [AdminController::class, 'userSearch']);
+$app->router->get('/Admin/UserProfile', [AdminController::class, 'userProfile']);
+$app->router->post('/Admin/UserProfile', [AdminController::class, 'userProfile']);
 
 $app->run();

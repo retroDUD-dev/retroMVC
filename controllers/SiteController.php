@@ -30,6 +30,9 @@ class SiteController extends Controller
     public function home(Request $request): string
     {
         $params = array();
+        if (Application::isAdmin()) {
+            Application::$APP->adminReset();
+        }
         if ($request->isPost()) {
             //If needed
         }
@@ -39,6 +42,9 @@ class SiteController extends Controller
     public function about(Request $request): string
     {
         $params = array();
+        if (Application::isAdmin()) {
+            Application::$APP->adminReset();
+        }
         Application::$APP->model = new Email();
         if ($request->isPost()) {
             Application::$APP->model->loadData($request->getBody());
