@@ -174,7 +174,7 @@ class AuthController extends Controller
 
     public function characterPreview(Request $request, array $params = array())
     {
-        $character = Application::$APP->session->get('previewChar');
+        $character = Application::$APP->session->get('characterPreview');
         $model = new CharacterPreview();
         if ($request->isPost()) {
             $model->loadData($request->getBody());

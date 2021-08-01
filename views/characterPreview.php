@@ -1,7 +1,10 @@
 <?php
 
+use app\core\Application;
 use app\core\form\Form;
 
+
+$model = Application::$APP->session->get('characterPreview');
 ?>
 <?php Form::begin('modelViewed', '', 'post') ?>
 <div class="text header">
@@ -19,7 +22,7 @@ use app\core\form\Form;
             <?php Form::button($model, 'saveFile', 'Save locally') ?>
         </div>
         <div class="row">
-            <?php Form::button($model, 'messageOwner', 'Message creator') ?>
+            <?php //Form::button($model, 'messageOwner', 'Message creator') ?>
         </div>
     </div>
 </div>
