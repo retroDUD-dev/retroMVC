@@ -10,6 +10,7 @@ class File extends Model
     public string $isPublic = '';
     public string $saveFile = '';
     public string $downloadPdf = '';
+    public string $newCharacter = '';
 
     public function attributes(): array
     {
@@ -17,7 +18,21 @@ class File extends Model
             'upload',
             'isPublic',
             'saveFile',
-            'downloadPdf'
+            'downloadPdf',
+            'newCharacter'
+        ];
+    }
+
+
+
+    public function labels(): array
+    {
+        return [
+            'upload' => '',
+            'isPublic' => '',
+            'saveFile' => '',
+            'downloadPdf' => '',
+            'newCharacter' => ''
         ];
     }
 
@@ -28,25 +43,12 @@ class File extends Model
 
     public function isPublic(): bool
     {
-        $this->isPublic = strtolower($this->isPublic);
-        switch ($this->isPublic) {
+        $strSwitch = strtolower($this->isPublic);
+        switch ($strSwitch) {
             case 'yes':
                 return true;
             default:
                 return false;
-        }
-    }
-
-    public function type(): string|false
-    {
-        if ($this->upload) {
-            return 'upload';
-        } elseif ($this->saveFile) {
-            return 'saveFile';
-        } elseif ($this->downloadPdf) {
-            return 'downloadPdf';
-        } else {
-            return false;
         }
     }
 
@@ -56,6 +58,5 @@ class File extends Model
         $this->isPublic = '';
         $this->saveFile = '';
         $this->downloadPdf = '';
-        
     }
 }

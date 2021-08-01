@@ -6,6 +6,7 @@ use app\core\Application;
 
 class UserProfile extends User
 {
+    public string $displayName = '';
     public string $firstname = '';
     public string $lastname = '';
     public string $email = '';
@@ -29,6 +30,7 @@ class UserProfile extends User
     {
         return [
             'id',
+            'displayName',
             'firstname',
             'lastname',
             'email',
@@ -42,6 +44,7 @@ class UserProfile extends User
     public function rules(): array
     {
         return [
+            'displayName' => [self::RULE_REQUIRED],
             'firstname' => [self::RULE_REQUIRED],
             'lastname' => [self::RULE_REQUIRED],
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [self::RULE_UNIQUE, 'class' => self::class]],
@@ -51,6 +54,7 @@ class UserProfile extends User
     public function labels(): array
     {
         return [
+            'displayName' => 'Display name',
             'firstname' => 'First name',
             'lastname' => 'Last name',
             'email' => 'Email',
@@ -65,6 +69,6 @@ class UserProfile extends User
 
     public function getDisplayName(): string
     {
-        return $this->firstname;
+        return $this->displayName;
     }
 }

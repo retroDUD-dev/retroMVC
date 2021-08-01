@@ -11,6 +11,7 @@ use function Composer\Autoload\includeFile;
     <div style="text-align: center; text-transform: uppercase;">search by:</div>
     <div class="buttonContainer" style="padding-top: 20px;">
         <?php Form::inputField($model, 'searchById', 'number', 'autofocus') ?>
+        <?php Form::inputField($model, 'searchByDisplayName') ?>
         <?php Form::inputField($model, 'searchByFirstname') ?>
         <?php Form::inputField($model, 'searchByLastname') ?>
         <?php Form::inputField($model, 'searchByEmail', 'email') ?>
@@ -29,6 +30,9 @@ use function Composer\Autoload\includeFile;
                 </th>
                 <th class="tHead tCell">
                     type
+                </th>
+                <th class="tHead tCell">
+                    Display Name
                 </th>
                 <th class="tHead tCell">
                     Name

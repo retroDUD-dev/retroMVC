@@ -246,7 +246,9 @@ class Character extends DbModel
             'upload' => '',
             'saveFile' => '',
             'downloadPdf' => '',
-            'isPublic' => ''
+            'isPublic' => '',
+            'newCharacter' => '',
+            'messageOwner' => ''
         ];
     }
 
@@ -652,7 +654,8 @@ class Character extends DbModel
 
     public function nameCharacter(): self
     {
-        if ((substr($this->file, -4) !== 'chr') && !$this->named) {
+        if ((substr($this->file, -4, 4) !== '.chr') && !$this->named) {
+            $this->user = Application::$APP->session->get('user')['displayName'];
             $this->file .= "-" . $this->name . ".chr";
             $this->named = true;
         }
@@ -792,41 +795,41 @@ class Character extends DbModel
 
     public function uploadPrepare(): object
     {
-        return new CharacterUpload(
-            $this->id,
-            $this->name,
-            $this->class,
-            $this->level,
-            $this->background,
-            $this->race,
-            $this->alignment,
-            $this->experiencePoints,
-            json_encode($this->attributes),
-            $this->inspiration,
-            $this->proficiency,
-            json_encode($this->savingThrows),
-            json_encode($this->skills),
-            json_encode($this->proficienciesAndLanguages),
-            json_encode($this->money),
-            $this->armor,
-            $this->initiative,
-            $this->speed,
-            $this->currentHitPoints,
-            $this->temporaryHitPoints,
-            $this->numberOfDice,
-            $this->sidesOfDice,
-            json_encode($this->deathSaves),
-            json_encode($this->attacks),
-            json_encode($this->equipment),
-            $this->personalityTraits,
-            $this->ideals,
-            $this->bonds,
-            $this->flaws,
-            json_encode($this->features),
-            $this->user,
-            $this->isPublic,
-            $this->file
-        );
+        $characterUpload =  new CharacterUpload();
+        $characterUpload->id = $this->id;
+        $characterUpload->name = $this->name;
+        $characterUpload->class = $this->class;
+        $characterUpload->level = $this->level;
+        $characterUpload->background = $this->background;
+        $characterUpload->race = $this->race;
+        $characterUpload->alignment = $this->alignment;
+        $characterUpload->experiencePoints = $this->experiencePoints;
+        $characterUpload->attributes = json_encode($this->attributes);
+        $characterUpload->inspiration = $this->inspiration;
+        $characterUpload->proficiency = $this->proficiency;
+        $characterUpload->savingThrows = json_encode($this->savingThrows);
+        $characterUpload->skills = json_encode($this->skills);
+        $characterUpload->proficienciesAndLanguages = json_encode($this->proficienciesAndLanguages);
+        $characterUpload->money = json_encode($this->money);
+        $characterUpload->armor = $this->armor;
+        $characterUpload->initiative = $this->initiative;
+        $characterUpload->speed = $this->speed;
+        $characterUpload->currentHitPoints = $this->currentHitPoints;
+        $characterUpload->temporaryHitPoints = $this->temporaryHitPoints;
+        $characterUpload->numberOfDice = $this->numberOfDice;
+        $characterUpload->sidesOfDice = $this->sidesOfDice;
+        $characterUpload->deathSaves = json_encode($this->deathSaves);
+        $characterUpload->attacks = json_encode($this->attacks);
+        $characterUpload->equipment = json_encode($this->equipment);
+        $characterUpload->personalityTraits = $this->personalityTraits;
+        $characterUpload->ideals = $this->ideals;
+        $characterUpload->bonds = $this->bonds;
+        $characterUpload->flaws = $this->flaws;
+        $characterUpload->features = json_encode($this->features);
+        $characterUpload->user = $this->user;
+        $characterUpload->isPublic = $this->isPublic;
+        $characterUpload->file = $this->file;
+        return $characterUpload;
     }
 
     public function fileOutput(string $path = '/'): string
@@ -922,5 +925,15 @@ class Character extends DbModel
     public function setFile($file): void
     {
         $this->file = $file;
+    }
+
+    public function getUser(): string
+    {
+        return $this->user;
+    }
+
+    public function setUser($user): void
+    {
+        $this->user = $user;
     }
 }

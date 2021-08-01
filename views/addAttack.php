@@ -9,15 +9,15 @@ use app\core\Application;
 <div class="container" style="text-align: right;">
     <div class="row">
         <div class="col">
-            <?php Form::inputField(Application::$APP->model, 'attackName', 'text', 'autofocus') ?>
+            <?php Form::inputField($model, 'attackName', 'text', 'autofocus') ?>
             <br>
-            <?php Form::inputField(Application::$APP->model, 'bonus', 'number') ?>
+            <?php Form::inputField($model, 'bonus', 'number') ?>
             <br>
-            <?php Form::inputField(Application::$APP->model, 'numberOfDice', 'number') ?><?php Form::inputField(Application::$APP->model, 'sidesOfDice', 'number') ?>
+            <?php Form::inputField($model, 'numberOfDice', 'number') ?><?php Form::inputField($model, 'sidesOfDice', 'number') ?>
             <br>
-            <?php Form::inputField(Application::$APP->model, 'type') ?>
+            <?php Form::inputField($model, 'type') ?>
             <br>
-            <?php Form::inputField(Application::$APP->model, 'comment') ?>
+            <?php Form::inputField($model, 'comment') ?>
             <br>
         </div>
     </div>

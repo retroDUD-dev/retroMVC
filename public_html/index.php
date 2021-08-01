@@ -45,6 +45,8 @@ $app->router->get('/MyAccount/Upload', [AuthController::class, 'upload']);
 $app->router->post('/MyAccount/Upload', [AuthController::class, 'upload']);
 $app->router->get('/MyAccount/CharacterSearch', [AuthController::class, 'characterSearch']);
 $app->router->post('/MyAccount/CharacterSearch', [AuthController::class, 'characterSearch']);
+$app->router->get('/MyAccount/CharacterPreview', [AuthController::class, 'characterPreview']);
+$app->router->post('/MyAccount/CharacterPreview', [AuthController::class, 'characterPreview']);
 $app->router->get('/MyAccount/MyProfile', [AuthController::class, 'userProfile']);
 $app->router->post('/MyAccount/MyProfile', [AuthController::class, 'userProfile']);
 $app->router->get('/MyAccount/Logout', [AuthController::class, 'logout']);

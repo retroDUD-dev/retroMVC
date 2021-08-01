@@ -76,7 +76,8 @@ abstract class DbModel extends Model
             $statement->bindValue(":$key", $value);
         }
         $statement->execute();
-        return $statement->fetchObject(static::class);
+        $to= $statement->fetchObject(static::class);
+        return $to;
     }
 
     public function findAll(array $where = array()): array|false

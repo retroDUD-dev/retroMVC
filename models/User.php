@@ -10,6 +10,7 @@ class User extends UserModel
     {
     }
 
+    public string $displayName = '';
     public string $firstname = '';
     public string $lastname = '';
     public string $email = '';
@@ -30,6 +31,7 @@ class User extends UserModel
     {
         return [
             'id',
+            'displayName',
             'firstname',
             'lastname',
             'email',
@@ -41,6 +43,7 @@ class User extends UserModel
     public function rules(): array
     {
         return [
+            'displayName' => [self::RULE_REQUIRED],
             'firstname' => [self::RULE_REQUIRED],
             'lastname' => [self::RULE_REQUIRED],
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [self::RULE_UNIQUE, 'class' => self::class]],
@@ -59,6 +62,7 @@ class User extends UserModel
     public function labels(): array
     {
         return [
+            'displayName' => 'Display name',
             'firstname' => 'First name',
             'lastname' => 'Last name',
             'email' => 'Email',
@@ -75,6 +79,6 @@ class User extends UserModel
 
     public function getDisplayName(): string
     {
-        return $this->firstname;
+        return $this->displayName;
     }
 }

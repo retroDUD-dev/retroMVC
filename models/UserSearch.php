@@ -13,6 +13,7 @@ class UserSearch extends UserModel
     }
 
     public string $searchById = '';
+    public string $searchByDisplayName = '';
     public string $searchByFirstname = '';
     public string $searchByLastname = '';
     public string $searchByEmail = '';
@@ -33,6 +34,7 @@ class UserSearch extends UserModel
     {
         return [
             'searchById',
+            'searchByDisplayName',
             'searchByFirstname',
             'searchByLastname',
             'searchByEmail',
@@ -44,6 +46,7 @@ class UserSearch extends UserModel
     {
         return [
             'searchById' => 'ID: ',
+            'searchByDisplayName' => 'Display name: ',
             'searchByFirstname' => 'Name: ',
             'searchByLastname' => 'Lastname: ',
             'searchByEmail' => 'Email: ',
@@ -73,7 +76,7 @@ class UserSearch extends UserModel
 
     public function getDisplayName(): string
     {
-        return $this->firstname;
+        return $this->displayName;
     }
 
     public function search(array $by): bool
@@ -82,7 +85,7 @@ class UserSearch extends UserModel
         $r = $this->findAll($by);
 
         foreach ($r as $user) {
-            $html .= "<tr class='header text'><td class='tCell'>" . $user->statusToString() . "</td><td class='tCell'>" . $user->typeToString() . "</td><td class='tCell'>" . $user->firstname. " ". $user->lastname . "</td><td class='tCell'>" . " &#60;" . $user->email . "&#62;</td><td class='tCell'><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('userSearch'), 'edit" . $user->id . "', 'EDIT') ?> <?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('userSearch'), 'delete" . $user->id . "', 'DELETE') ?></td></tr>";
+            $html .= "<tr class='text'><td class='tCell'>" . $user->statusToString() . "</td><td class='tCell'>" . $user->typeToString() . "</td><td class='tCell'>" . $user->displayName. "</td><td class='tCell'>" . "</td><td class='tCell'>" . $user->firstname. " ". $user->lastname . "</td><td class='tCell'>" . " &#60;" . $user->email . "&#62;</td><td class='tCell'><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('userSearch'), 'edit" . $user->id . "', 'EDIT') ?> <?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('userSearch'), 'delete" . $user->id . "', 'DELETE') ?></td></tr>";
         }
         if (!$html) {
             $html = '<div class="text error">No results.</div>';

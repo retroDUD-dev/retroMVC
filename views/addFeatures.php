@@ -9,9 +9,9 @@ use app\core\Application;
 <div class="container" style="text-align: right;">
     <div class="row">
         <div class="col">
-            <?php Form::inputField(Application::$APP->model, 'featureName', 'text', 'autofocus') ?>
+            <?php Form::inputField($model, 'featureName', 'text', 'autofocus') ?>
             <br>
-            <?php Form::textarea(Application::$APP->model, 'description') ?>
+            <?php Form::textarea($model, 'description') ?>
         </div>
     </div>
 </div>

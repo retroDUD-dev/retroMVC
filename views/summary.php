@@ -19,10 +19,10 @@ $character = Application::$APP->session->get('newCharacter')->nameCharacter();
             <div class="text inner">Allow other people to access my character?
                 <div style="height: 5px;"></div>
                 <div class="check">
-                    Yes<?php Form::inputField($character, 'isPublic', 'radio', 'checked') ?>
+                    Yes<?php Form::radio($character, 'isPublic', 'YES', 'checked') ?>
                 </div>
                 <div class="check">
-                    No<?php Form::inputField($character, 'isPublic', 'radio',) ?>
+                    No<?php Form::radio($character, 'isPublic') ?>
                 </div>
                 <div style="height: 10px;"></div>
             </div>
@@ -32,6 +32,9 @@ $character = Application::$APP->session->get('newCharacter')->nameCharacter();
         </div>
         <div class="row">
             <?php Form::button($character, 'downloadPdf', 'Download PDF') ?>
+        </div>
+        <div class="row">
+            <?php Form::button($character, 'newCharacter', 'Create a new character') ?>
         </div>
     </div>
 </div>

@@ -42,7 +42,10 @@ class PDF extends FPDF
         $pdf->Cell(70, 4, $character->getClass() . " 1");
         $pdf->SetXY(128, 19);
         $pdf->Cell(70, 4, $character->getBackground());
-        $pdf->SetXY(168, 19);
+        if (!Application::isGuest()) {
+            $pdf->SetXY(168, 19);
+            $pdf->Cell(70, 4, $character->getUser());
+        }
         //$pdf->Cell(70, 4, htmlspecialchars($_SESSION["username"]));
 
         $pdf->SetXY(91, 29);
@@ -208,7 +211,7 @@ class PDF extends FPDF
 
         $pdf->Output('F', Application::$ROOT_DIR . $path . substr($character->getFile(), 0, -4) . ".pdf");
         $imagick->readImage(Application::$ROOT_DIR . $path . substr($character->getFile(), 0, -4) . ".pdf");
-        $imagick->writeImages(Application::$ROOT_DIR . "/public_html/tmp/" . substr($character->getFile(), 0, -4) . ".jpg", false);
+        $imagick->writeImages(Application::$ROOT_DIR . $path . substr($character->getFile(), 0, -4) . ".jpg", false);
 
         return Application::$ROOT_DIR . $path . substr($character->getFile(), 0, -4) . ".pdf";
     }

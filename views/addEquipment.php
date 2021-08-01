@@ -9,7 +9,7 @@ use app\core\Application;
 <div class="container" style="text-align: right;">
     <div class="row">
         <div class="col">
-            <?php Form::inputField(Application::$APP->model, 'itemName', 'text', 'autofocus') ?><?php Form::inputField(Application::$APP->model, 'quantity', 'number') ?>
+            <?php Form::inputField($model, 'itemName', 'text', 'autofocus') ?><?php Form::inputField($model, 'quantity', 'number') ?>
         </div>
     </div>
 </div>

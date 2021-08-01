@@ -154,6 +154,8 @@ body {
 }
 
 .tCell{
+    text-align: center;
+    font-size: 26px !important;
     border: 1px solid var(--border-color);
     width: 300px;
     height: auto;

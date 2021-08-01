@@ -11,9 +11,11 @@ use app\core\middlewares\AuthMiddleware;
 use app\core\UserModel;
 use app\models\AccountActions;
 use app\models\Character;
+use app\models\CharacterPreview;
 use app\models\LoginForm;
 use app\models\ResetPasswordForm;
 use app\models\CharacterSearch;
+use app\models\CharacterUpload;
 use app\models\PDF;
 use app\models\UserProfile;
 
@@ -79,7 +81,7 @@ class AuthController extends Controller
             Application::$APP->adminReset();
         }
         $action = new AccountActions;
-        if (Application::$APP->session->get('upload') && !Application::isGuest()) {
+        if (Application::$APP->session->get('upload')) {
             $character = Application::$APP->session->get('newCharacter');
             $character->user = Application::$APP->session->get('user')['primaryValue'];
             if (Application::$APP->session->get('upload')['isPublic']) {
@@ -89,10 +91,10 @@ class AuthController extends Controller
             }
             Application::$APP->session->remove('upload');
             $characterUpload = $character->uploadPrepare();
+            Application::$APP->session->set('uploadChar', true);
             $characterUpload->save();
-            if (!rename(Application::$ROOT_DIR . "//public_html/tmp" . Application::$APP->session->get('newCharacter')->file, Application::$ROOT_DIR . "/runtime/" . Application::$APP->session->get('newCharacter')->file)) {
-                PDF::create(Application::$APP->session->get('newCharacter'), '/runtime/');
-            }
+            Application::$APP->session->remove('uploadChar');
+            PDF::create(Application::$APP->session->get('newCharacter'), '/runtime/');
             Application::$APP->session->setFlash('success', $character->name . ' uploaded!');
             Application::$APP->response->redirect('/MyAccount');
         }
@@ -123,14 +125,24 @@ class AuthController extends Controller
         $character = new CharacterSearch();
         $by = array();
         if ($request->isPost()) {
-            if ($request->checkValue('Download PDF')) {
-                $charID = filter_var(substr($request->getValue('downloadPdf'), 11), FILTER_VALIDATE_INT);
-                $character = $character->findOne(["id" => $charID]);
-                Application::$APP->response->download(Application::$ROOT_DIR . '/runtime/' . substr($character->file, 0, -4) . ".pdf");
+            if ($request->checkValue('Preview')) {
+                $charID = filter_var(substr($request->getValue('Preview'), 16), FILTER_VALIDATE_INT);
+                $characterPrepare = new CharacterUpload();
+                $characterPrepare = $characterPrepare->findOne(['id' => $charID]);
+                $characterPrepare = $characterPrepare->downloadPrepare();
+                $characterPrepare->nameCharacter();
+                $file = substr($characterPrepare->file, 0, -4) . ".jpg";
+                $pdf = substr($file, 0, -4) . ".pdf";
+                copy(Application::$ROOT_DIR . "/runtime/" . $file, Application::$ROOT_DIR . "/public_html/tmp/" . $file);
+                copy(Application::$ROOT_DIR . "/runtime/" . $pdf, Application::$ROOT_DIR . "/public_html/tmp/" . $pdf);
+                Application::$APP->session->set('characterPreview', $characterPrepare);
+                Application::$APP->response->redirect('/MyAccount/CharacterPreview');
+                exit;
             } elseif ($request->checkValue('delete')) {
                 $charID = substr($request->getValue('delete'), 6);
                 $character->delete(['id' => $charID]);
             }
+
             $character->loadData($request->getBody());
             if (isset($character->searchByName) && $character->searchByName) {
                 $by['name'] = "$character->searchByName";
@@ -156,6 +168,30 @@ class AuthController extends Controller
             Application::$APP->session->set('searchResults', true);
         }
         return $this->render('characterSearch', [
+            'model' => $character
+        ]);
+    }
+
+    public function characterPreview(Request $request, array $params = array())
+    {
+        $character = Application::$APP->session->get('previewChar');
+        $model = new CharacterPreview();
+        if ($request->isPost()) {
+            $model->loadData($request->getBody());
+
+            if (isset($model->saveFile)) {
+                Application::$APP->response->download(Application::$ROOT_DIR . "/public_html/tmp/" . $character->fileOutput('/public_html/tmp/'));
+                Application::$APP->session->setFlash('success', "Character downloaded!");
+            } elseif (isset($model->downloadPdf)) {
+                Application::$APP->response->download(Application::$ROOT_DIR . '/public_html/tmp/' . substr($character->file, 0, -4) ."pdf");
+                Application::$APP->session->setFlash('success', "PDF downloaded!");
+            } elseif (isset($model->messageOwner)) {
+                //todo: Implement messaging system
+                exit;
+            }
+        }
+
+        return $this->render('characterPreview', [
             'model' => $character
         ]);
     }

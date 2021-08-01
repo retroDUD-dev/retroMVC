@@ -11,7 +11,9 @@ use app\core\form\Form;
     <div class="innerContainer" style="text-align: right;">
         <?php $form = Form::begin('register', '', "post") ?>
         <br>
-        <?php Form::inputField($model, 'firstname', 'text', 'autofocus') ?>
+        <?php Form::inputField($model, 'displayName', 'text', 'autofocus') ?>
+        <br>
+        <?php Form::inputField($model, 'firstname') ?>
         <?php Form::inputField($model, 'lastname') ?>
         <br>
         <?php Form::inputField($model, 'email') ?>

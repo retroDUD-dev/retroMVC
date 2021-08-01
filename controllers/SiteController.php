@@ -29,173 +29,168 @@ class SiteController extends Controller
 
     public function home(Request $request): string
     {
-        $params = array();
         if (Application::isAdmin()) {
             Application::$APP->adminReset();
         }
         if ($request->isPost()) {
             //If needed
         }
-        return $this->render('home', $params);
+        return $this->render('home');
     }
 
     public function about(Request $request): string
     {
-        $params = array();
         if (Application::isAdmin()) {
             Application::$APP->adminReset();
         }
-        Application::$APP->model = new Email();
+        $model = new Email();
         if ($request->isPost()) {
-            Application::$APP->model->loadData($request->getBody());
+            $model->loadData($request->getBody());
 
-            if (Application::$APP->model->validate()) {
-                Application::$APP->model->send();
+            if ($model->validate()) {
+                $model->send();
                 Application::$APP->session->setFlash('success', 'Email sent!');
                 Application::$APP->response->redirect('/AboutMe');
                 exit;
             }
         }
-        return $this->render('about', $params);
+        return $this->render('about', ['model' => $model]);
     }
 
     public function createNewChar(Request $request): string
     {
-        $params = array();
-        Application::$APP->model = new Character();
+        $model = new Character();
         if ($request->isPost()) {
-            Application::$APP->model->loadData($request->getBody());
-            Application::$APP->model->setHitDice(new Dice(Application::$APP->model->numberOfDice, Application::$APP->model->sidesOfDice));
-            if (Application::$APP->model->validate()) {
-                Application::$APP->session->set('newCharacter', Application::$APP->model);
-                Application::$APP->session->setFlash('success', Application::$APP->model->getName() . " created! Now add some actions!");
+            $model->loadData($request->getBody());
+            $model->setHitDice(new Dice($model->numberOfDice, $model->sidesOfDice));
+            if ($model->validate()) {
+                Application::$APP->session->set('newCharacter', $model);
+                Application::$APP->session->setFlash('success', $model->getName() . " created! Now add some actions!");
                 Application::$APP->response->redirect('/CreateNewCharacter/AddAttacks');
                 exit;
             }
         }
-        return $this->render('createNewChar', $params);
+        return $this->render('createNewChar', ['model' => $model]);
     }
 
     public function addAttack(Request $request)
     {
-        $params = array();
-        Application::$APP->model = new Attack();
+        $model = new Attack();
 
         if ($request->isPost()) {
-            Application::$APP->model->loadData($request->getBody());
+            $model->loadData($request->getBody());
 
-            if (Application::$APP->model->validate() && !Application::$APP->model->addLast) {
-                Application::$APP->session->get('newCharacter')->addAttack(Application::$APP->model);
-                Application::$APP->session->setFlash('success', "Action: " . Application::$APP->model->getAttackName() . " added! Add more actions!");
+            if ($model->validate() && !$model->addLast) {
+                Application::$APP->session->get('newCharacter')->addAttack($model);
+                Application::$APP->session->setFlash('success', "Action: " . $model->getAttackName() . " added! Add more actions!");
                 Application::$APP->response->redirect('/CreateNewCharacter/AddAttacks');
                 exit;
-            } elseif (!Application::$APP->model->validate() && !Application::$APP->model->addLast) {
+            } elseif (!$model->validate() && !$model->addLast) {
                 Application::$APP->session->setFlash('success', "Can't have an attack without a name...");
-            } elseif (Application::$APP->model->validate() && Application::$APP->model->addLast) {
-                Application::$APP->model->addLast();
-                Application::$APP->session->get('newCharacter')->addAttack(Application::$APP->model);
-                Application::$APP->session->setFlash('success', "Action: " . Application::$APP->model->getAttackName() . " added! Add some equipment!");
+            } elseif ($model->validate() && $model->addLast) {
+                $model->addLast();
+                Application::$APP->session->get('newCharacter')->addAttack($model);
+                Application::$APP->session->setFlash('success', "Action: " . $model->getAttackName() . " added! Add some equipment!");
                 Application::$APP->response->redirect('/CreateNewCharacter/AddEquipment');
-                $this->render('addEquipment', $params);
+                $this->render('addEquipment', ['model' => $model]);
                 exit;
-            } elseif (!Application::$APP->model->validate() && Application::$APP->model->addLast) {
-                Application::$APP->model->addLast();
+            } elseif (!$model->validate() && $model->addLast) {
+                $model->addLast();
                 Application::$APP->session->setFlash('success', "Add some equipment!");
                 Application::$APP->response->redirect('/CreateNewCharacter/AddEquipment');
-                $this->render('addEquipment', $params);
+                $this->render('addEquipment', ['model' => $model]);
                 exit;
             }
         }
-        return $this->render('addAttack', $params);
+        return $this->render('addAttack', ['model' => $model]);
     }
     public function addEquipment(Request $request)
     {
-        $params = array();
-        Application::$APP->model = new Equipment();
+        $model = new Equipment();
 
         if ($request->isPost()) {
-            Application::$APP->model->loadData($request->getBody());
+            $model->loadData($request->getBody());
 
-            if (Application::$APP->model->validate() && !Application::$APP->model->addLast) {
-                Application::$APP->session->get('newCharacter')->addToInventory(Application::$APP->model);
-                Application::$APP->session->setFlash('success', Application::$APP->model->getItemName() . "(" . Application::$APP->model->getQuantity() . ") added! Add more items!");
+            if ($model->validate() && !$model->addLast) {
+                Application::$APP->session->get('newCharacter')->addToInventory($model);
+                Application::$APP->session->setFlash('success', $model->getItemName() . "(" . $model->getQuantity() . ") added! Add more items!");
                 Application::$APP->response->redirect('/CreateNewCharacter/AddEquipment');
                 exit;
-            } elseif (!Application::$APP->model->validate() && !Application::$APP->model->addLast) {
+            } elseif (!$model->validate() && !$model->addLast) {
                 Application::$APP->session->setFlash('success', "Can't have unnamed equipment...");
-            } elseif (Application::$APP->model->validate() && Application::$APP->model->addLast) {
-                Application::$APP->model->addLast();
-                Application::$APP->session->get('newCharacter')->addToInventory(Application::$APP->model);
-                Application::$APP->session->setFlash('success', Application::$APP->model->getItemName() . "(" . Application::$APP->model->getQuantity() . ") added! Add some features!");
+            } elseif ($model->validate() && $model->addLast) {
+                $model->addLast();
+                Application::$APP->session->get('newCharacter')->addToInventory($model);
+                Application::$APP->session->setFlash('success', $model->getItemName() . "(" . $model->getQuantity() . ") added! Add some features!");
                 Application::$APP->response->redirect('/CreateNewCharacter/AddFeatures');
-                $this->render('addFeatures', $params);
+                $this->render('addFeatures', ['model' => $model]);
                 exit;
-            } elseif (!Application::$APP->model->validate() && Application::$APP->model->addLast) {
-                Application::$APP->model->addLast();
+            } elseif (!$model->validate() && $model->addLast) {
+                $model->addLast();
                 Application::$APP->session->setFlash('success', "Add some features!");
                 Application::$APP->response->redirect('/CreateNewCharacter/AddFeatures');
-                $this->render('addFeatures', $params);
+                $this->render('addFeatures', ['model' => $model]);
                 exit;
             }
         }
-        return $this->render('addEquipment', $params);
+        return $this->render('addEquipment', ['model' => $model]);
     }
 
     public function addFeatures(Request $request)
     {
-        $params = array();
-        Application::$APP->model = new Feature();
+        $model = new Feature();
 
         if ($request->isPost()) {
-            Application::$APP->model->loadData($request->getBody());
+            $model->loadData($request->getBody());
 
-            if (Application::$APP->model->validate() && !Application::$APP->model->addLast) {
-                Application::$APP->session->get('newCharacter')->addFeature(Application::$APP->model);
-                Application::$APP->session->setFlash('success', "Feature: " . Application::$APP->model->getFeatureName() . " added! Add more features!");
+            if ($model->validate() && !$model->addLast) {
+                Application::$APP->session->get('newCharacter')->addFeature($model);
+                Application::$APP->session->setFlash('success', "Feature: " . $model->getFeatureName() . " added! Add more features!");
                 Application::$APP->response->redirect('/CreateNewCharacter/AddFeatures');
                 exit;
-            } elseif (!Application::$APP->model->validate() && !Application::$APP->model->addLast) {
+            } elseif (!$model->validate() && !$model->addLast) {
                 Application::$APP->session->setFlash('success', "Features need names too...");
-            } elseif (Application::$APP->model->validate() && Application::$APP->model->addLast) {
-                Application::$APP->model->addLast();
-                Application::$APP->session->get('newCharacter')->addFeature(Application::$APP->model);
-                Application::$APP->session->setFlash('success', "Feature: " . Application::$APP->model->getFeatureName() . " added! Here is your character!");
+            } elseif ($model->validate() && $model->addLast) {
+                $model->addLast();
+                Application::$APP->session->get('newCharacter')->addFeature($model);
+                Application::$APP->session->setFlash('success', "Feature: " . $model->getFeatureName() . " added! Here is your character!");
                 Application::$APP->response->redirect('/CreateNewCharacter/Summary');
-                $this->render('summary', $params);
+                $this->render('summary', ['model' => $model]);
                 exit;
-            } elseif (!Application::$APP->model->validate() && Application::$APP->model->addLast) {
-                Application::$APP->model->addLast();
+            } elseif (!$model->validate() && $model->addLast) {
+                $model->addLast();
                 Application::$APP->session->setFlash('success', "Here is your character!");
                 Application::$APP->response->redirect('/CreateNewCharacter/Summary');
-                $this->render('summary', $params);
+                $this->render('summary', ['model' => $model]);
                 exit;
             }
         }
-        return $this->render('addFeatures', $params);
+        return $this->render('addFeatures', ['model' => $model]);
     }
 
     public function summary(Request $request)
     {
-        $params = array();
-        Application::$APP->model = new File();
+        $model = new File();
         if ($request->isPost()) {
-            Application::$APP->model->loadData($request->getBody());
+            $model->loadData($request->getBody());
 
-            if (Application::$APP->model->type() === 'upload') {
-                Application::$APP->session->set('upload', ['waiting' => true, 'isPublic' => Application::$APP->model->isPublic()]);
+            if (isset($model->upload)) {
+                Application::$APP->session->set('upload', ['waiting' => true, 'isPublic' => $model->isPublic()]);
                 Application::$APP->response->redirect('/MyAccount');
-            } elseif (Application::$APP->model->type() === 'saveFile') {
+                exit;
+            } elseif (isset($model->saveFile)) {
                 Application::$APP->response->download(Application::$ROOT_DIR . '/public_html/tmp/' . Application::$APP->session->get('newCharacter')->fileOutput('/public_html/tmp/'));
-                Application::$APP->model->reset();
                 Application::$APP->session->setFlash('success', "Character downloaded!");
-            } elseif (Application::$APP->model->type() === 'downloadPdf') {
+            } elseif (isset($model->downloadPdf)) {
                 Application::$APP->response->download(Application::$ROOT_DIR . "/public_html/tmp/" . substr(Application::$APP->session->get('newCharacter')->file, 0, -4) . ".pdf");
-                Application::$APP->model->reset();
                 Application::$APP->session->setFlash('success', "PDF downloaded!");
+            }elseif (isset($model->newCharacter)) {
+                Application::$APP->response->redirect('/CreateNewCharacter');
+                exit;
             }
-            Application::$APP->model->reset();
+            $model->reset();
         }
 
-        return $this->render('summary', $params);
+        return $this->render('summary', ['model' => $model]);
     }
 }

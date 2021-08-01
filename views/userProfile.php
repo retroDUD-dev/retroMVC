@@ -10,6 +10,8 @@ if (!isset($disabled)) {
 <div class="header text">My profile</div>
 <?php Form::begin('userProfile', '', 'post') ?>
 <div class="containerCol">
+    <?php Form::inputField($model, 'displayName', 'text', $disabled) ?>
+    <br>
     <?php Form::inputField($model, 'firstname', 'text', $disabled) ?>
     <br>
     <?php Form::inputField($model, 'lastname', 'text', $disabled) ?>
