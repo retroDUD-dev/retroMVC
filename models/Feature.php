@@ -39,7 +39,8 @@ class Feature extends Model
     {
         return [
             'featureName' => 'Feature: ',
-            'description' => 'Description: '
+            'description' => 'Description: ',
+            'addMore' => ''
         ];
     }
 

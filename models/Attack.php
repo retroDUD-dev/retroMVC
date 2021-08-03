@@ -65,7 +65,8 @@ class Attack extends Model
             'numberOfDice' => 'Hit Dice: ',
             'sidesOfDice' => ' d',
             'type' => 'Attack type',
-            'comment' => 'Comment: '
+            'comment' => 'Comment: ',
+            'addMore' => ''
         ];
     }
 

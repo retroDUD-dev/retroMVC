@@ -47,7 +47,7 @@ class AdminController extends Controller
                 $userID = filter_var(substr($request->getValue('edit'), 4), FILTER_VALIDATE_INT);
                 $user = new User();
                 $user = $user->findOne(["id" => $userID]);
-                Application::$APP->session->set('user', $user);
+                Application::$APP->session->set('userProfile', $user);
                 Application::$APP->response->redirect('MyAccount/MyProfile');
                 exit;
             } elseif ($request->checkValue('DELETE')) {

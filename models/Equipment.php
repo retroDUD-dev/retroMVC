@@ -43,7 +43,8 @@ class Equipment extends Model
     {
         return [
             'itemName' => 'Item: ',
-            'quantity' => 'Quantity: '
+            'quantity' => 'Quantity: ',
+            'addMore' => ''
         ];
     }
 

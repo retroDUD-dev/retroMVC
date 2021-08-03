@@ -12,15 +12,19 @@ class InputField extends BaseField
     public const TYPE_RADIO = 'radio';
     public const TYPE_EMAIL = 'email';
     public const TYPE_FILE = 'file';
+    public const TYPE_CHECKBOX = 'checkbox';
 
     public function __construct(
         public Model $model,
         public string $attribute = '',
         private string $form = '',
-        private string $type = self::TYPE_TEXT,
+        private mixed $value = '',
         private string $custom = ''
-    ) {
-    }
+        ) {
+        }
+        
+        private string $type = self::TYPE_TEXT;
+        private mixed $defaultValue = '';
 
     public function passwordField(): object
     {
@@ -30,6 +34,7 @@ class InputField extends BaseField
 
     public function numberField(): object
     {
+        $this->defaultValue = 0;
         $this->type = self::TYPE_NUMBER;
         return $this;
     }
@@ -40,13 +45,19 @@ class InputField extends BaseField
         return $this;
     }
 
+    public function checkField(): object
+    {
+        $this->type = self::TYPE_CHECKBOX;
+        return $this;
+    }
+
     public function emailField(): object
     {
         $this->type = self::TYPE_EMAIL;
         return $this;
     }
 
-    public function fileFile(): object
+    public function fileField(): object
     {
         $this->type = self::TYPE_FILE;
         return $this;
@@ -60,7 +71,7 @@ class InputField extends BaseField
             $this->attribute,
             $this->model->hasErrors($this->attribute) ? 'invalid' : '',
             $this->form,
-            $this->model->{$this->attribute} ?? $this->model->getTypedFalse($this->type),
+            $this->value !== '' ? $this->value : $this->defaultValue,
             $this->custom
         );
     }

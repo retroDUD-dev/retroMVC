@@ -6,7 +6,7 @@ use app\core\form\Form;
 
 $model = Application::$APP->session->get('characterPreview');
 ?>
-<?php Form::begin('modelViewed', '', 'post') ?>
+<?= Form::begin('modelViewed', '', 'post') ?>
 <div class="text header">
     <?= $model->getName()."'s model sheet" ?>
 </div>
@@ -16,10 +16,10 @@ $model = Application::$APP->session->get('characterPreview');
     </div>
     <div class="buttonContainerCol">
         <div class="row">
-            <?php Form::button($model, 'downloadPdf', 'Download PDF') ?>
+            <?= Form::button($model, 'downloadPdf', 'Download PDF') ?>
         </div>
         <div class="row">
-            <?php Form::button($model, 'saveFile', 'Save locally') ?>
+            <?= Form::button($model, 'saveFile', 'Save locally') ?>
         </div>
         <div class="row">
             <?php //Form::button($model, 'messageOwner', 'Message creator') ?>

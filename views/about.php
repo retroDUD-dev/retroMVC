@@ -28,16 +28,16 @@ use app\core\Application;
         <div class="innerContainer">
             CONTACT ME<br><br>
             <div style="text-align: right">
-            <?php Form::begin('sendEmail', '', 'post') ?>
-            <?php Form::inputField(Application::$APP->model, 'firstName', 'text', 'placeholder="Your name here"') ?>
-            <?php Form::inputField(Application::$APP->model, 'lastName', 'text', 'placeholder="Your last name here"') ?>
+            <?= Form::begin('sendEmail', '', 'post') ?>
+            <?= Form::inputField($model, 'firstName', 'text', 'placeholder="Your name here"') ?>
+            <?= Form::inputField($model, 'lastName', 'text', 'placeholder="Your last name here"') ?>
             <br>
-            <?php Form::inputField(Application::$APP->model, 'email', 'email', 'placeholder="Your email here"') ?>
+            <?= Form::inputField($model, 'email', 'email', 'placeholder="Your email here"')->emailField() ?>
             <br>
-            <?php Form::textarea(Application::$APP->model, 'subject', 'style="width: 80%; height:200px;" placeholder="Your message here"') ?>
+            <?= Form::textarea($model, 'subject', 'style="width: 80%; height:200px;" placeholder="Your message here"') ?>
             </div>
-            <?php Form::button(Application::$APP->model, 'submit', 'Submit') ?>
-            <?php Form::begin('sendEmail', '', 'post') ?>
+            <?= Form::button($model, 'submit', 'Submit') ?>
+            <?= Form::end('sendEmail', '', 'post') ?>
         </div>
     </div>
 </div>

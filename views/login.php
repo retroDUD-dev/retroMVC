@@ -7,7 +7,7 @@ use app\core\form\Form;
 <div class="header text">Login</div>
 <div class="containerCol">
     <div class="row text">Please fill in your credentials to login.</div>
-    <?php $form = Form::begin('login', '', "post") ?>
+    <?= Form::begin('login', '', "post") ?>
     <div class="innerContainer">
         <div style="text-align: right;">
             <?php if (Application::$APP->session->getFlash('fail')) : ?>
@@ -17,11 +17,11 @@ use app\core\form\Form;
             <?php else : ?>
                 <br>
             <?php endif; ?>
-            <?php Form::inputField($model, 'email', 'email',  'autofocus') ?>
+            <?= Form::inputField($model, 'email', '',  'autofocus')->emailField() ?>
             <br>
-            <?php Form::inputField($model, 'password', 'password') ?>
+            <?= Form::inputField($model, 'password')->passwordField() ?>
         </div>
-        <?php Form::button($model, 'login', 'Login') ?>
+        <?= Form::button($model, 'login', 'Login') ?>
     </div>
     </form>
 </div>

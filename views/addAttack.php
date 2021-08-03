@@ -1,30 +1,29 @@
 <?php
 
 use app\core\form\Form;
-use app\core\Application;
 
 ?>
-<?php Form::begin('addAttack', '', 'post') ?>
+<?= Form::begin('addAttack', '', 'post') ?>
 <div class="text header">Add attacks!</div>
 <div class="container" style="text-align: right;">
     <div class="row">
         <div class="col">
-            <?php Form::inputField($model, 'attackName', 'text', 'autofocus') ?>
+            <?= Form::inputField($model, 'attackName', '', 'autofocus') ?>
             <br>
-            <?php Form::inputField($model, 'bonus', 'number') ?>
+            <?= Form::inputField($model, 'bonus')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'numberOfDice', 'number') ?><?php Form::inputField($model, 'sidesOfDice', 'number') ?>
+            <?= Form::inputField($model, 'numberOfDice')->numberField() ?><?= Form::inputField($model, 'sidesOfDice')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'type') ?>
+            <?= Form::inputField($model, 'type') ?>
             <br>
-            <?php Form::inputField($model, 'comment') ?>
+            <?= Form::inputField($model, 'comment') ?>
             <br>
         </div>
     </div>
 </div>
 <div class="submitContainer">
-    <input class="submit" type="submit" form="addAttack" name="addMore" value="ADD ATTACK">
+    <?= Form::button($model, 'addMore', "ADD ATTACK") ?>
     <div class="spacer"></div>
     <input class="submitAll" type="submit" form="addAttack" name="addLast" value="Continue">
 </div>
-<?php Form::end() ?>
+<?= Form::end() ?>

@@ -6,7 +6,7 @@ use app\models\PDF;
 
 $character = Application::$APP->session->get('newCharacter')->nameCharacter();
 ?>
-<?php Form::begin('characterCreated', '', 'post') ?>
+<?= Form::begin('characterCreated', '', 'post') ?>
 <div class="text header">Summary</div>
 <div class="containerCol">
     <?php PDF::create($character, '/public_html/tmp/') ?>
@@ -15,26 +15,26 @@ $character = Application::$APP->session->get('newCharacter')->nameCharacter();
     </div>
     <div class="buttonContainerCol">
         <div class="innerContainer">
-            <?php Form::button($character, 'upload', 'Upload character') ?>
+            <?= Form::button($character, 'upload', 'Upload character') ?>
             <div class="text inner">Allow other people to access my character?
                 <div style="height: 5px;"></div>
                 <div class="check">
-                    Yes<?php Form::radio($character, 'isPublic', 'YES', 'checked') ?>
+                    Yes<?= Form::inputField($character, 'isPublic', 'YES', 'checked')->radioField() ?>
                 </div>
                 <div class="check">
-                    No<?php Form::radio($character, 'isPublic') ?>
+                    No<?= Form::inputField($character, 'isPublic')->radioField() ?>
                 </div>
                 <div style="height: 10px;"></div>
             </div>
         </div>
         <div class="row">
-            <?php Form::button($character, 'saveFile', 'Save locally') ?>
+            <?= Form::button($character, 'saveFile', 'Save locally') ?>
         </div>
         <div class="row">
-            <?php Form::button($character, 'downloadPdf', 'Download PDF') ?>
+            <?= Form::button($character, 'downloadPdf', 'Download PDF') ?>
         </div>
         <div class="row">
-            <?php Form::button($character, 'newCharacter', 'Create a new character') ?>
+            <?= Form::button($character, 'newCharacter', 'Create a new character') ?>
         </div>
     </div>
 </div>

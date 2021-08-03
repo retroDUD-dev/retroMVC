@@ -13,38 +13,38 @@ $this->title = 'My Account';
     </div>
     <div class="innerContainer">
         <div class="container">
-            <?php Form::begin('characterManipulation', '', 'post') ?>
+            <?= Form::begin('characterManipulation', '', 'post') ?>
             <div class="row">
-                <?php Form::button($model, 'createNew', 'Create New Character') ?>
+                <?= Form::button($model, 'createNew', 'Create New Character') ?>
                 <br>
-                <?php Form::button($model, 'characterSearch', 'View Characters') ?>
+                <?= Form::button($model, 'characterSearch', 'View Characters') ?>
             </div>
-            <?php Form::end() ?>
+            <?= Form::end() ?>
             <div class="row" style="border: 1px solid var(--border-color); width:33%;">
-                <?php Form::begin('uploadLocal', '', 'post', 'enctype="multipart/form-data"') ?>
+                <?= Form::begin('uploadLocal', '', 'post', 'enctype="multipart/form-data"') ?>
                 <div class="text">Upload local character:</div>
                 <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
-                <?php Form::inputField($model, 'characterUpload', 'file', 'style="width: 80%" accept=".chr" required') ?>
+                <?= Form::inputField($model, 'characterUpload', '', 'style="width: 80%" accept=".chr" required')->fileField() ?>
                 <div class="text inner">Allow other people to access my character?
                     <div style="height: 5px;"></div>
                     <div class="text">
-                        Yes<?php Form::radio($model, 'isPublic', 'yes', 'checked') ?>
+                        Yes<?= Form::inputField($model, 'isPublic', 'yes', 'checked')->radioField() ?>
                     </div>
                     <br>
                     <div class="text">
-                        No<?php Form::radio($model, 'isPublic', 'no',) ?>
+                        No<?= Form::inputField($model, 'isPublic', 'no',)->radioField() ?>
                     </div>
                     <div style="height: 10px;"></div>
-                    <?php Form::button($model, 'upload', 'Upload') ?>
+                    <?= Form::button($model, 'upload', 'Upload') ?>
                 </div>
-                <?php Form::end() ?>
+                <?= Form::end() ?>
             </div>
             <div class="row">
-                <?php Form::begin('accountActions', '', 'post') ?>
-                <?php Form::button($model, 'edit', 'Edit profile') ?>
+                <?= Form::begin('accountActions', '', 'post') ?>
+                <?= Form::button($model, 'edit', 'Edit profile') ?>
                 <br>
-                <?php Form::button($model, 'logout', 'Sign out') ?>
-                <?php Form::end() ?>
+                <?= Form::button($model, 'logout', 'Sign out') ?>
+                <?= Form::end() ?>
             </div>
         </div>
     </div>

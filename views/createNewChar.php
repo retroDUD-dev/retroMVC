@@ -4,89 +4,89 @@ use app\core\form\Form;
 use app\core\Application;
 
 ?>
-<?php Form::begin('createNew', '', 'post') ?>
+<?= Form::begin('createNew', '', 'post') ?>
 <div class="text header">Create a new character</div>
 <div class="container" style="text-align: right;">
     <div class="col left">
-        <?php Form::inputField($model, 'name', 'text', 'autofocus') ?>
+        <?= Form::inputField($model, 'name', '', 'autofocus') ?>
         <br>
-        <?php Form::inputField($model, 'class') ?>
+        <?= Form::inputField($model, 'class') ?>
         <br>
-        <?php Form::inputField($model, 'background') ?>
+        <?= Form::inputField($model, 'background') ?>
         <br>
-        <?php Form::inputField($model, 'race') ?>
+        <?= Form::inputField($model, 'race') ?>
         <br>
-        <?php Form::inputField($model, 'numberOfDice', 'number') ?><?php Form::inputField($model, 'sidesOfDice', 'number') ?>
+        <?= Form::inputField($model, 'numberOfDice')->numberField() ?><?= Form::inputField($model, 'sidesOfDice')->numberField() ?>
         <br>
         <div class="innerContainer">
             <div class="inner">
                 <div class="text name inner">Attributes</div>
             </div>
-            <?php Form::inputField($model, 'attributes/strength', 'number') ?>
+            <?= Form::inputField($model, 'attributes/strength')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'attributes/dexterity', 'number') ?>
+            <?= Form::inputField($model, 'attributes/dexterity')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'attributes/constitution', 'number') ?>
+            <?= Form::inputField($model, 'attributes/constitution')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'attributes/intelligence', 'number') ?>
+            <?= Form::inputField($model, 'attributes/intelligence')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'attributes/wisdom', 'number') ?>
+            <?= Form::inputField($model, 'attributes/wisdom')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'attributes/charisma', 'number') ?>
+            <?= Form::inputField($model, 'attributes/charisma')->numberField() ?>
             <br>
         </div>
         <div class="innerContainer">
             <div class="inner">
                 <div class="text name inner">Saving throws</div>
             </div>
-            <?php Form::inputField($model, 'savingThrows/strength', 'number') ?>
+            <?= Form::inputField($model, 'savingThrows/strength')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'savingThrows/dexterity', 'number') ?>
+            <?= Form::inputField($model, 'savingThrows/dexterity')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'savingThrows/constitution', 'number') ?>
+            <?= Form::inputField($model, 'savingThrows/constitution')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'savingThrows/intelligence', 'number') ?>
+            <?= Form::inputField($model, 'savingThrows/intelligence')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'savingThrows/wisdom', 'number') ?>
+            <?= Form::inputField($model, 'savingThrows/wisdom')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'savingThrows/charisma', 'number') ?>
+            <?= Form::inputField($model, 'savingThrows/charisma')->numberField() ?>
             <br>
         </div>
     </div>
     <div class="col center">
-        <?php Form::inputField($model, 'alignment') ?>
+        <?= Form::inputField($model, 'alignment') ?>
         <br>
-        <?php Form::inputField($model, 'proficiency', 'number') ?>
+        <?= Form::inputField($model, 'proficiency')->numberField() ?>
         <br>
-        <?php Form::inputField($model, 'armor', 'number') ?>
+        <?= Form::inputField($model, 'armor')->numberField() ?>
         <br>
-        <?php Form::inputField($model, 'initiative', 'number') ?>
+        <?= Form::inputField($model, 'initiative')->numberField() ?>
         <br>
-        <?php Form::inputField($model, 'speed', 'number') ?>
+        <?= Form::inputField($model, 'speed')->numberField() ?>
         <br>
-        <?php Form::inputField($model, 'hitPoints', 'number') ?>
+        <?= Form::inputField($model, 'hitPoints')->numberField() ?>
         <br>
-        <?php Form::inputField($model, 'personalityTraits') ?>
+        <?= Form::inputField($model, 'personalityTraits') ?>
         <br>
-        <?php Form::inputField($model, 'ideals') ?>
+        <?= Form::inputField($model, 'ideals') ?>
         <br>
-        <?php Form::inputField($model, 'bonds') ?>
+        <?= Form::inputField($model, 'bonds') ?>
         <br>
-        <?php Form::inputField($model, 'flaws') ?>
+        <?= Form::inputField($model, 'flaws') ?>
         <br>
-        <?php Form::textarea($model, 'proficiencies') ?>
+        <?= Form::textarea($model, 'proficiencies') ?>
         <br>
-        <?php Form::textarea($model, 'languages') ?>
+        <?= Form::textarea($model, 'languages') ?>
         <br>
-        <?php Form::inputField($model, 'money/CP', 'number') ?>
+        <?= Form::inputField($model, 'money/CP')->numberField() ?>
         <br>
-        <?php Form::inputField($model, 'money/SP', 'number') ?>
+        <?= Form::inputField($model, 'money/SP')->numberField() ?>
         <br>
-        <?php Form::inputField($model, 'money/EP', 'number') ?>
+        <?= Form::inputField($model, 'money/EP')->numberField() ?>
         <br>
-        <?php Form::inputField($model, 'money/GP', 'number') ?>
+        <?= Form::inputField($model, 'money/GP')->numberField() ?>
         <br>
-        <?php Form::inputField($model, 'money/PP', 'number') ?>
+        <?= Form::inputField($model, 'money/PP')->numberField() ?>
         <br>
     </div>
     <div class="col right">
@@ -94,41 +94,41 @@ use app\core\Application;
             <div class="inner">
                 <div class="text name inner">Skills</div>
             </div>
-            <?php Form::inputField($model, 'skills/acrobatics', 'number') ?>
+            <?= Form::inputField($model, 'skills/acrobatics')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/animalHandling', 'number') ?>
+            <?= Form::inputField($model, 'skills/animalHandling')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/arcana', 'number') ?>
+            <?= Form::inputField($model, 'skills/arcana')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/athletics', 'number') ?>
+            <?= Form::inputField($model, 'skills/athletics')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/deception', 'number') ?>
+            <?= Form::inputField($model, 'skills/deception')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/history', 'number') ?>
+            <?= Form::inputField($model, 'skills/history')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/insight', 'number') ?>
+            <?= Form::inputField($model, 'skills/insight')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/intimidation', 'number') ?>
+            <?= Form::inputField($model, 'skills/intimidation')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/investigation', 'number') ?>
+            <?= Form::inputField($model, 'skills/investigation')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/medicine', 'number') ?>
+            <?= Form::inputField($model, 'skills/medicine')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/nature', 'number') ?>
+            <?= Form::inputField($model, 'skills/nature')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/perception', 'number') ?>
+            <?= Form::inputField($model, 'skills/perception')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/performance', 'number') ?>
+            <?= Form::inputField($model, 'skills/performance')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/persuasion', 'number') ?>
+            <?= Form::inputField($model, 'skills/persuasion')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/religion', 'number') ?>
+            <?= Form::inputField($model, 'skills/religion')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/sleightOfHand', 'number') ?>
+            <?= Form::inputField($model, 'skills/sleightOfHand')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/stealth', 'number') ?>
+            <?= Form::inputField($model, 'skills/stealth')->numberField() ?>
             <br>
-            <?php Form::inputField($model, 'skills/survival', 'number') ?>
+            <?= Form::inputField($model, 'skills/survival')->numberField() ?>
             <br>
         </div>
     </div>
@@ -136,4 +136,4 @@ use app\core\Application;
 <div class="submitContainer">
     <input class="submitAll" type="submit" form="createNew" value="CONTINUE">
 </div>
-<?php Form::end() ?>
+<?= Form::end() ?>

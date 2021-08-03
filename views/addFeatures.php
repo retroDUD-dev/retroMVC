@@ -4,20 +4,20 @@ use app\core\form\Form;
 use app\core\Application;
 
 ?>
-<?php Form::begin('addFeatures', '', 'post') ?>
+<?= Form::begin('addFeatures', '', 'post') ?>
 <div class="text header">Add Features!</div>
 <div class="container" style="text-align: right;">
     <div class="row">
         <div class="col">
-            <?php Form::inputField($model, 'featureName', 'text', 'autofocus') ?>
+            <?= Form::inputField($model, 'featureName', '', 'autofocus') ?>
             <br>
-            <?php Form::textarea($model, 'description') ?>
+            <?= Form::textarea($model, 'description') ?>
         </div>
     </div>
 </div>
 <div class="submitContainer">
-    <input class="submit" type="submit" form="addFeatures" name="addMore" value="ADD FEATURE">
+    <?= Form::button($model, 'addMore', "ADD FEATURE") ?>
     <div class="spacer"></div>
     <input class="submitAll" type="submit" form="addFeatures" name="addLast" value="Continue">
 </div>
-<?php Form::end() ?>
+<?= Form::end() ?>

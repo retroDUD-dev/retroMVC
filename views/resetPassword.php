@@ -7,29 +7,29 @@ use app\core\form\Form;
 <div class="header text">Reset Password</div>
 <div class="containerCol" style="text-align: right;">
     <div class="row text">Please fill out this form to reset your password.</div>
-    <?php $form = Form::begin('newPassword', '', "post") ?>
+    <?= Form::begin('newPassword', '', "post") ?>
     <div class="innerContainer">
         <br>
         <?php if (Application::$APP->session->getFlash('fail')) : ?>
             <div class="error">
                 <?= Application::$APP->session->getFlash('fail'); ?>
             </div>
-            <?php Form::inputField($model, 'oldPassword', 'password', 'style="border: 3px solid var(--error-color);" autofocus') ?>
+            <?= Form::inputField($model, 'oldPassword', '', 'style="border: 3px solid var(--error-color);" autofocus')->passwordField() ?>
         <?php else : ?>
-            <?php Form::inputField($model, 'oldPassword', 'password', 'autofocus') ?>
+            <?= Form::inputField($model, 'oldPassword', '', 'autofocus')->passwordField() ?>
         <?php endif; ?>
         <br>
-        <?php Form::inputField($model, 'newPassword', 'password') ?>
+        <?= Form::inputField($model, 'newPassword')->passwordField() ?>
         <br>
-        <?php Form::inputField($model, 'confirmNewPassword', 'password') ?>
+        <?= Form::inputField($model, 'confirmNewPassword')->passwordField() ?>
         <br>
-        <?php Form::button($model, 'submit', 'Submit') ?>
+        <?= Form::button($model, 'submit', 'Submit') ?>
         <?php if (Application::isAdmin() && str_contains(Application::$APP->request?->getPath(), "/Admin") && $model->getDisplayName() !== Application::$APP->session->get('user')['displayName']) : ?>
         <a class="text" href="/Admin/UserProfile">Cancel</a>
         <?php else : ?>
         <a class="text" href="/MyAccount/MyProfile">Cancel</a>
         <?php endif; ?>
     </div>
-    <?php Form::end() ?>
+    <?= Form::end() ?>
 </div>
 <div class="submitContainer"></div>

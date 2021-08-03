@@ -10,7 +10,7 @@ class Button extends BaseField
         public Model $model,
         public string $attribute = '',
         private string $form = '',
-        private string $buttonName = '',
+        private string $value = '',
         private string $custom = ''
     ){
 
@@ -23,7 +23,7 @@ class Button extends BaseField
             $this->attribute,
             $this->model->hasErrors($this->attribute) ? 'invalid' : '',
             $this->form,
-            $this->buttonName,
+            $this->value,
             $this->custom
         );
     }

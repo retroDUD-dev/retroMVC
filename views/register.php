@@ -9,23 +9,23 @@ use app\core\form\Form;
         <div class="col text">Please fill this form to create an account.</div>
     </div>
     <div class="innerContainer" style="text-align: right;">
-        <?php $form = Form::begin('register', '', "post") ?>
+        <?= Form::begin('register', '', "post") ?>
         <br>
-        <?php Form::inputField($model, 'displayName', 'text', 'autofocus') ?>
+        <?= Form::inputField($model, 'displayName', '', 'autofocus') ?>
         <br>
-        <?php Form::inputField($model, 'firstname') ?>
-        <?php Form::inputField($model, 'lastname') ?>
+        <?= Form::inputField($model, 'firstname') ?>
+        <?= Form::inputField($model, 'lastname') ?>
         <br>
-        <?php Form::inputField($model, 'email') ?>
+        <?= Form::inputField($model, 'email')->emailField() ?>
         <br>
-        <?php Form::inputField($model, 'password', 'password') ?>
+        <?= Form::inputField($model, 'password')->passwordField() ?>
         <br>
-        <?php Form::inputField($model, 'confirmPassword', 'password') ?>
+        <?= Form::inputField($model, 'confirmPassword')->passwordField() ?>
         <div class="text inner">
-            <input type="submit" class="submit" name="register" value="Submit">
+            <?= Form::button($model, 'register', 'Submit') ?>
             <input type="reset" class="submit" value="Reset">
         </div>
-        <?php Form::end() ?>
+        <?= Form::end() ?>
     </div>
 </div>
 <div class="submitContainer">

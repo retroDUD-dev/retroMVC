@@ -655,7 +655,7 @@ class Character extends DbModel
     public function nameCharacter(): self
     {
         if ((substr($this->file, -4, 4) !== '.chr') && !$this->named) {
-            $this->user = Application::$APP->session->get('user')['displayName'];
+            $this->user = Application::$APP->session?->get('user')['displayName'] ?? '';
             $this->file .= "-" . $this->name . ".chr";
             $this->named = true;
         }

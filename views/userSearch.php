@@ -6,20 +6,20 @@ use app\core\form\Form;
 use function Composer\Autoload\includeFile;
 
 ?>
-<?php Form::begin('usersearch', '', 'post') ?>
+<?= Form::begin('usersearch', '', 'post') ?>
 <div class="innerContainer text">
     <div style="text-align: center; text-transform: uppercase;">search by:</div>
     <div class="buttonContainer" style="padding-top: 20px;">
-        <?php Form::inputField($model, 'searchById', 'number', 'autofocus') ?>
-        <?php Form::inputField($model, 'searchByDisplayName') ?>
-        <?php Form::inputField($model, 'searchByFirstname') ?>
-        <?php Form::inputField($model, 'searchByLastname') ?>
-        <?php Form::inputField($model, 'searchByEmail', 'email') ?>
-        <?php Form::select($model, 'searchByStatus', ['0' => 'Active', '1' => 'Inactive', '2' => 'Deactivated']) ?>
-        <?php Form::button($model, 'search', 'Search') ?>
+        <?= Form::inputField($model, 'searchById', '', 'autofocus')->numberField() ?>
+        <?= Form::inputField($model, 'searchByDisplayName') ?>
+        <?= Form::inputField($model, 'searchByFirstname') ?>
+        <?= Form::inputField($model, 'searchByLastname') ?>
+        <?= Form::inputField($model, 'searchByEmail')->emailField() ?>
+        <?= Form::select($model, 'searchByStatus', ['0' => 'Active', '1' => 'Inactive', '2' => 'Deactivated']) ?>
+        <?= Form::button($model, 'search', 'Search') ?>
     </div>
 </div>
-<?php Form::end() ?>
+<?= Form::end() ?>
 
 <?php if (Application::$APP->session->get('searchResults')) : ?>
     <table>

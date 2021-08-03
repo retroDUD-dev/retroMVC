@@ -13,12 +13,12 @@ $this->title = 'My Account';
     </div>
     <div class="innerContainer">
         <div class="container">
-            <?php Form::begin('adminOptions', '', 'post') ?>
+            <?= Form::begin('adminOptions', '', 'post') ?>
             <div class="row">
-                <?php Form::button($model, 'userSearch', 'user search') ?>
+                <?= Form::button($model, 'userSearch', 'user search') ?>
                 <br>
             </div>
-            <?php Form::end() ?>
+            <?= Form::end() ?>
         </div>
     </div>
 </div>

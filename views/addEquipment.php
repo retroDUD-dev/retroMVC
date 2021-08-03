@@ -4,18 +4,18 @@ use app\core\form\Form;
 use app\core\Application;
 
 ?>
-<?php Form::begin('addEquipment', '', 'post') ?>
+<?= Form::begin('addEquipment', '', 'post') ?>
 <div class="text header">Add equipment!</div>
 <div class="container" style="text-align: right;">
     <div class="row">
         <div class="col">
-            <?php Form::inputField($model, 'itemName', 'text', 'autofocus') ?><?php Form::inputField($model, 'quantity', 'number') ?>
+            <?= Form::inputField($model, 'itemName', '', 'autofocus') ?><?= Form::inputField($model, 'quantity')->numberField() ?>
         </div>
     </div>
 </div>
 <div class="submitContainer">
-    <input class="submit" type="submit" form="addEquipment" name="addMore" value="ADD ITEM">
+    <?= Form::button($model, 'addMore', "ADD ITEM") ?>
     <div class="spacer"></div>
     <input class="submitAll" type="submit" form="addEquipment" name="addLast" value="Continue">
 </div>
-<?php Form::end() ?>
+<?= Form::end() ?>

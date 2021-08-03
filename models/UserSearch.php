@@ -85,7 +85,7 @@ class UserSearch extends UserModel
         $r = $this->findAll($by);
 
         foreach ($r as $user) {
-            $html .= "<tr class='text'><td class='tCell'>" . $user->statusToString() . "</td><td class='tCell'>" . $user->typeToString() . "</td><td class='tCell'>" . $user->displayName. "</td><td class='tCell'>" . "</td><td class='tCell'>" . $user->firstname. " ". $user->lastname . "</td><td class='tCell'>" . " &#60;" . $user->email . "&#62;</td><td class='tCell'><?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('userSearch'), 'edit" . $user->id . "', 'EDIT') ?> <?php app\core\\form\Form::button(app\core\Application::\$APP->session->get('userSearch'), 'delete" . $user->id . "', 'DELETE') ?></td></tr>";
+            $html .= "<tr class='text'><td class='tCell'>" . $user->statusToString() . "</td><td class='tCell'>" . $user->typeToString() . "</td><td class='tCell'>" . $user->displayName. "</td><td class='tCell'>" . $user->firstname. " ". $user->lastname . "</td><td class='tCell'>" . " &#60;" . $user->email . "&#62;</td><td class='tCell'><?= app\core\\form\Form::button(app\core\Application::\$APP->session->get('userSearch'), 'edit" . $user->id . "', 'EDIT') ?> <?= app\core\\form\Form::button(app\core\Application::\$APP->session->get('userSearch'), 'delete" . $user->id . "', 'DELETE') ?></td></tr>";
         }
         if (!$html) {
             $html = '<div class="text error">No results.</div>';

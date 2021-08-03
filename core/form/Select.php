@@ -18,15 +18,6 @@ class Select extends BaseField
 
     public function renderInput(): string
     {
-        //     <select id="cars" name="cars">
-        //       <option value="volvo">Volvo</option>
-        //       <option value="saab">Saab</option>
-        //       <option value="fiat">Fiat</option>
-        //       <option value="audi">Audi</option>
-        //     </select>
-        //         '<textarea name="%s" class="input %s" form="%s" %s>%s</textarea>'
-
-
         $select = "<select name='%s' class='input %s' form='%s' %s>\n";
         foreach ($this->items as $itemName => $item) {
             $select .= "<option value='$itemName'>$item</option>\n";

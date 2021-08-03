@@ -73,7 +73,8 @@ class User extends UserModel
             'edit' => '',
             'save' => '',
             'deactivate' => '',
-            'delete' => ''
+            'delete' => '',
+            'register' => ''
         ];
     }
 

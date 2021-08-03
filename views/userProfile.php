@@ -8,28 +8,28 @@ if (!isset($disabled)) {
 }
 ?>
 <div class="header text">My profile</div>
-<?php Form::begin('userProfile', '', 'post') ?>
+<?= Form::begin('userProfile', '', 'post') ?>
 <div class="containerCol">
-    <?php Form::inputField($model, 'displayName', 'text', $disabled) ?>
+    <?= Form::inputField($model, 'displayName', '', $disabled) ?>
     <br>
-    <?php Form::inputField($model, 'firstname', 'text', $disabled) ?>
+    <?= Form::inputField($model, 'firstname', '', $disabled) ?>
     <br>
-    <?php Form::inputField($model, 'lastname', 'text', $disabled) ?>
+    <?= Form::inputField($model, 'lastname', '', $disabled) ?>
     <br>
-    <?php Form::inputField($model, 'email', 'email', $disabled) ?>
+    <?= Form::inputField($model, 'email', '', $disabled)->emailField() ?>
     <br>
     <?php if ($disabled === 'disabled') : ?>
-        <?php Form::button($model, 'edit', 'Edit') ?>
+        <?= Form::button($model, 'edit', 'Edit') ?>
     <?php else : ?>
-        <?php Form::button($model, 'save', 'Save') ?>
+        <?= Form::button($model, 'save', 'Save') ?>
     <?php endif; ?>
     <br>
 </div>
 <div class="submitContainer">
     <div class="innerContainer">
-        <?php Form::button($model, 'resetPassword', 'Reset password') ?>
-        <?php Form::button($model, 'deactivate', 'deactivate') ?>
-        <?php Form::button($model, 'delete', 'delete') ?>
+        <?= Form::button($model, 'resetPassword', 'Reset password') ?>
+        <?= Form::button($model, 'deactivate', 'deactivate') ?>
+        <?= Form::button($model, 'delete', 'delete') ?>
     </div>
 </div>
-<?php Form::end(); ?>
+<?= Form::end(); ?>
