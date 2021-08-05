@@ -78,17 +78,4 @@ class UserSearch extends UserModel
     {
         return $this->displayName;
     }
-
-    public function search(array $by): bool
-    {
-        $html = '';
-        $r = $this->findAll($by);
-
-        
-
-        $handle = fopen(Application::$ROOT_DIR . "/runtime/AdminSearchBy" . Application::$APP->session->get('user')['primaryValue'] . ".php", "w");
-        fwrite($handle, $html, strlen($html));
-        fclose($handle);
-        return file_exists(Application::$ROOT_DIR . "/runtime/AdminSearchBy" . Application::$APP->session->get('user')['primaryValue'] . ".php");
-    }
 }
