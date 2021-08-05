@@ -11,11 +11,13 @@ $model = Application::$APP->session->get('userProfile')
 <div class="header text"><?= $model->getDisplayName() ?>'s profile</div>
 <?= Form::begin('adminUserProfile', '', 'post') ?>
 <div class="containerCol">
-    <?= Form::inputField($model, 'firstname', '', $disabled) ?>
+    <?= Form::inputField($model, 'displayName', $model->displayName, $disabled) ?>
     <br>
-    <?= Form::inputField($model, 'lastname', '', $disabled) ?>
+    <?= Form::inputField($model, 'firstname', $model->firstname, $disabled) ?>
     <br>
-    <?= Form::inputField($model, 'email', '', $disabled)->emailField() ?>
+    <?= Form::inputField($model, 'lastname', $model->lastname, $disabled) ?>
+    <br>
+    <?= Form::inputField($model, 'email', $model->email, $disabled)->emailField() ?>
     <br>
     <?php if ($disabled === 'disabled') : ?>
         <?= Form::button($model, 'edit', 'Edit') ?>

@@ -10,13 +10,13 @@ if (!isset($disabled)) {
 <div class="header text">My profile</div>
 <?= Form::begin('userProfile', '', 'post') ?>
 <div class="containerCol">
-    <?= Form::inputField($model, 'displayName', '', $disabled) ?>
+    <?= Form::inputField($model, 'displayName', $model->displayName, $disabled) ?>
     <br>
-    <?= Form::inputField($model, 'firstname', '', $disabled) ?>
+    <?= Form::inputField($model, 'firstname', $model->firstname, $disabled) ?>
     <br>
-    <?= Form::inputField($model, 'lastname', '', $disabled) ?>
+    <?= Form::inputField($model, 'lastname', $model->lastname, $disabled) ?>
     <br>
-    <?= Form::inputField($model, 'email', '', $disabled)->emailField() ?>
+    <?= Form::inputField($model, 'email', $model->email, $disabled)->emailField() ?>
     <br>
     <?php if ($disabled === 'disabled') : ?>
         <?= Form::button($model, 'edit', 'Edit') ?>

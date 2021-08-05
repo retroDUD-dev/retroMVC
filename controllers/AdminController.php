@@ -7,6 +7,7 @@ use app\core\Request;
 use app\core\Controller;
 use app\core\Response;
 use app\core\middlewares\AdminMiddleware;
+use app\core\UserModel;
 use app\models\User;
 use app\models\UserProfile;
 use app\models\UserSearch;
@@ -48,7 +49,7 @@ class AdminController extends Controller
                 $user = new User();
                 $user = $user->findOne(["id" => $userID]);
                 Application::$APP->session->set('userProfile', $user);
-                Application::$APP->response->redirect('MyAccount/MyProfile');
+                Application::$APP->response->redirect('/Admin/UserProfile');
                 exit;
             } elseif ($request->checkValue('DELETE')) {
                 $userID = substr($request->getValue('delete'), 6);
@@ -71,14 +72,15 @@ class AdminController extends Controller
                 $by['status'] = "$search->searchByStatus";
             }
         }
-        if ($search->search($by)) {
-            Application::$APP->session->set('userSearch', $search);
-            Application::$APP->session->set('searchResults', true);
-        }
+        $data = $search->findAll($by);
 
-        return $this->render('userSearch', [
-            'model' => $search
-        ]);
+        return $this->render(
+            'userSearch',
+            [
+                'model' => $search
+            ],
+            $data
+        );
     }
 
     public function userProfile(Request $request, array $params = array())
@@ -91,7 +93,7 @@ class AdminController extends Controller
             $disabled = 'disabled';
         }
 
-        $userIdentifier = ['id' => Application::$APP->session->get('profileUser')->id];
+        $userIdentifier = ['id' => Application::$APP->session->get('userProfile')->id];
         $user = $edit->findOne($userIdentifier);
 
         if ($request->isPost()) {
@@ -102,40 +104,37 @@ class AdminController extends Controller
                 exit;
             }
             if (!isset($edit->edit)) {
-                if ($edit->validate()) {
-                    if (isset($edit->save)) {
-                        $updated = false;
-                        if (isset($edit->firstname)) {
-                            $user->update(['firstname' => $edit->firstname], $userIdentifier);
-                            $updated = true;
-                        }
-                        if (isset($edit->lastname)) {
-                            $user->update(['lastname' => $edit->lastname], $userIdentifier);
-                            $updated = true;
-                        }
-                        if (isset($edit->email)) {
-                            $user->update(['email' => $edit->email], $userIdentifier);
-                            $updated = true;
-                        }
-                        if ($updated) {
-                            $disabled = 'disabled';
-                            Application::$APP->session->setFlash('success', 'Profile updated');
-                            Application::$APP->response->redirect('/Admin');
-                            exit;
-                        }
-                    } elseif (isset($edit->deactivate)) {
-                        $user->update(['status' => 2], $userIdentifier);
-                        Application::$APP->logout();
-                        Application::$APP->session->setFlash('success', 'Account has been deactivated. Contact me if you wish to restore it.');
-                        Application::$APP->response->redirect('/');
-                        exit;
-                    } elseif (isset($edit->delete)) {
-                        $user->delete(['id' => $userIdentifier]);
-                        Application::$APP->logout();
-                        Application::$APP->session->setFlash('success', 'Account has been deleted.');
-                        Application::$APP->response->redirect('/');
-                        exit;
+                if (isset($edit->save)) {
+                    $updated = false;
+                    if (isset($edit->firstname)) {
+                        $user->update(['firstname' => $edit->firstname], $userIdentifier);
+                        $updated = true;
                     }
+                    if (isset($edit->lastname)) {
+                        $user->update(['lastname' => $edit->lastname], $userIdentifier);
+                        $updated = true;
+                    }
+                    if (isset($edit->email)) {
+                        $user->update(['email' => $edit->email], $userIdentifier);
+                        $updated = true;
+                    }
+                    if ($updated) {
+                        Application::$APP->session->setFlash('success', 'Profile updated');
+                        Application::$APP->response->redirect('/Admin/UserSearch');
+                    }
+                    $disabled = 'disabled';
+                } elseif (isset($edit->deactivate)) {
+                    $user->update(['status' => UserModel::STATUS_DEACTIVATED], $userIdentifier);
+                    Application::$APP->logout();
+                    Application::$APP->session->setFlash('success', 'Account has been deactivated. Contact me if you wish to restore it.');
+                    Application::$APP->response->redirect('/');
+                    exit;
+                } elseif (isset($edit->delete)) {
+                    $user->delete(['id' => $userIdentifier]);
+                    Application::$APP->logout();
+                    Application::$APP->session->setFlash('success', 'Account has been deleted.');
+                    Application::$APP->response->redirect('/');
+                    exit;
                 }
             } else {
                 $disabled = '';

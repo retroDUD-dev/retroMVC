@@ -50,7 +50,7 @@ class Application
     {
         if (self::$APP->isGuest()) {
             return false;
-        } elseif (self::$APP->session->get('user')['isAdmin']) {
+        } elseif (self::$APP->session->get('user')['isAdmin'] || self::$APP->session->get('admin')['isAdmin']) {
             return true;
         }
         return false;

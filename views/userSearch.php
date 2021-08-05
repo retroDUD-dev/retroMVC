@@ -21,30 +21,56 @@ use function Composer\Autoload\includeFile;
 </div>
 <?= Form::end() ?>
 
-<?php if (Application::$APP->session->get('searchResults')) : ?>
-    <table>
-        <tbody>
-            <tr class="tHead header text">
-                <th class="tHead tCell">
-                    Status
-                </th>
-                <th class="tHead tCell">
-                    type
-                </th>
-                <th class="tHead tCell">
-                    Display Name
-                </th>
-                <th class="tHead tCell">
-                    Name
-                </th>
-                <th class="tHead tCell">
-                    email
-                </th>
-                <th class="tHead tCell">
-                    Options
-                </th>
+<table>
+    <tbody>
+        <tr class="tHead header text">
+            <th class="tHead tCell">
+                Status
+            </th>
+            <th class="tHead tCell">
+                type
+            </th>
+            <th class="tHead tCell">
+                Display Name
+            </th>
+            <th class="tHead tCell">
+                Name
+            </th>
+            <th class="tHead tCell">
+                email
+            </th>
+            <th class="tHead tCell">
+                Options
+            </th>
+        </tr>
+        <?php
+
+        foreach ($data as $user) {
+            echo "
+                <tr class='text'>
+                    <td class='tCell'>" .
+                $user->statusToString() . "
+                    </td>
+                    <td class='tCell'>" .
+                $user->typeToString() . "
+                </td>
+                <td class='tCell'>" .
+                $user->displayName . "
+                </td>
+                <td class='tCell'>" .
+                $user->firstname . " " . $user->lastname . "
+                </td>
+                <td class='tCell'>" . "
+                    &#60;" . $user->email . "&#62;
+                </td>
+                <td class='tCell'>" .
+                Form::button($user, "edit" . $user->id, 'EDIT') .
+                Form::button($user, "delete" . $user->id, 'DELETE') . "
+                </td>
             </tr>
-            <?php includeFile(Application::$ROOT_DIR . "/runtime/AdminSearchBy" . Application::$APP->session->get('user')['primaryValue'] . ".php") ?>
-        </tbody>
-    </table>
-<?php endif ?>
+            ";
+        }
+
+        ?>
+    </tbody>
+</table>

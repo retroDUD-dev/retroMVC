@@ -31,9 +31,9 @@ class Controller
         $this->layout = $layout;
     }
 
-    public function render($view, $params = array()): string
+    public function render($view, $params = array(), $data = array()): string
     {
-        return Application::$APP->view->renderView($view, $params);
+        return Application::$APP->view->renderView($view, $params, $data);
     }
 
     public function registerMiddleware(BaseMiddleware $middleware): void

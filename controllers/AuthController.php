@@ -163,13 +163,17 @@ class AuthController extends Controller
                 $by['searchOnlyMine'] = $character->searchOnlyMine;
             }
         }
-        if ($character->search($by)) {
-            Application::$APP->session->set('characterSearch', $character);
-            Application::$APP->session->set('searchResults', true);
+        if (isset($by['searchOnlyMine'])) {
+            unset($by['searchOnlyMine']);
         }
-        return $this->render('characterSearch', [
-            'model' => $character
-        ]);
+        $data = $character->findAll($by);
+        return $this->render(
+            'characterSearch',
+            [
+                'model' => $character
+            ],
+            $data
+        );
     }
 
     public function characterPreview(Request $request, array $params = array())
@@ -183,7 +187,7 @@ class AuthController extends Controller
                 Application::$APP->response->download(Application::$ROOT_DIR . "/public_html/tmp/" . $character->fileOutput('/public_html/tmp/'));
                 Application::$APP->session->setFlash('success', "Character downloaded!");
             } elseif (isset($model->downloadPdf)) {
-                Application::$APP->response->download(Application::$ROOT_DIR . '/public_html/tmp/' . substr($character->file, 0, -4) ."pdf");
+                Application::$APP->response->download(Application::$ROOT_DIR . '/public_html/tmp/' . substr($character->file, 0, -4) . "pdf");
                 Application::$APP->session->setFlash('success', "PDF downloaded!");
             } elseif (isset($model->messageOwner)) {
                 //todo: Implement messaging system
@@ -282,11 +286,7 @@ class AuthController extends Controller
                         if ($updated) {
                             Application::$APP->login($user);
                             Application::$APP->session->setFlash('success', 'Profile updated');
-                            if (Application::$APP->session->get('admin') && Application::$APP->session->get('user')['primaryValue'] !== Application::$APP->session->get('admin')['primaryValue']) {
-                                Application::$APP->response->redirect('/Admin/UserProfile');
-                            } else {
-                                Application::$APP->response->redirect('/MyAccount/MyProfile');
-                            }
+                            Application::$APP->response->redirect('/MyAccount/MyProfile');
                         }
                         $disabled = 'disabled';
                     } elseif (isset($edit->deactivate)) {

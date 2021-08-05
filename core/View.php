@@ -9,9 +9,9 @@ class View
     ) {
     }
 
-    public function renderView($view, $params = array()): string
+    public function renderView($view, $params = array(), $data = array()): string
     {
-        $viewContent = $this->renderOnlyView($view, $params);
+        $viewContent = $this->renderOnlyView($view, $params, $data);
         $layoutContent = $this->layoutContent();
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
@@ -24,7 +24,7 @@ class View
         return ob_get_clean();
     }
 
-    protected function renderOnlyView($view, $params): string|false
+    protected function renderOnlyView($view, $params, $data): string|false
     {
         foreach ($params as $key => $value) {
             $$key = $value;
